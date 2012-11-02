@@ -132,7 +132,7 @@ function count_time_to(track){
             total += tts($(e).find(".length").text())
         }
     )
-    var time = total + Math.ceil((data_cnt - data_leave) - data_cnt)
+    var time = total + Math.ceil((sec_total - sec_past) - sec_total)
     time = (time > 0) ? time : 0
     return "+" + stt(time)
 }
@@ -179,9 +179,9 @@ function showLocalStorage() {
 
 
 eval(newMessageData.toString().replace(
-	'if ((aCfg & 16) == 0) {',
+    'if ((aCfg & 16) == 0) {',
     'if ((aCfg & 16) == 0) { body += \'<span onclick="name_prompt(\\\'\' + data.user_id + \'\\\')" class="tuz_hack r4" style="background-color: #\' + data.user_id + \';">&nbsp;<span class="\' + data.user_id + \'">\' + uid_to_name(data.user_id) + \'</span>&nbsp;</span> \';'
-	))
+))
 
 
 $($btn_row).append('<button class="btn btn-mini" onclick="showLocalStorage()"><i class="icon-list-alt"></i></button>')
@@ -481,5 +481,3 @@ eval(playlistUpdate.toString().replace(
 
 ]]></>).toString();
 document.getElementsByTagName('head')[0].appendChild(script);
-
-// tuz tuza
