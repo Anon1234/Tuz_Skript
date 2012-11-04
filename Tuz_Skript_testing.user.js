@@ -19,9 +19,12 @@ css_style.innerHTML = '' +
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
-// FIXME
-/*dark = document.styleSheets[2]
-dark.insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)*/
+
+for (var i = 0; i < document.styleSheets.length; i++) {
+    if (document.styleSheets[i].title == "neutron") {
+        document.styleSheets[i].insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)
+    }
+};
 
 
 var script = document.createElement('script');
