@@ -234,7 +234,7 @@ if (aCfg & 0x100000) {
 
 // remove player
 if (aCfg & 0x400000) {
-    $('div.mb:eq(1)').remove()
+    $("#lsn-btn").parents('.mb').remove()
     //auto_resize()
 }
 
