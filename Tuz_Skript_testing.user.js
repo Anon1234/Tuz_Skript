@@ -22,7 +22,8 @@ document.getElementsByTagName('head')[0].appendChild(css_style);
 
 for (var i = 0; i < document.styleSheets.length; i++) {
     if (document.styleSheets[i].title == "neutron") {
-        document.styleSheets[i].insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)
+        dark = document.styleSheets[i]
+        dark.insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)
     }
 };
 
