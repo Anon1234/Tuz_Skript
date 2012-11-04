@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.7.2
+// @version     2.7.3
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.meta.js
 // ==/UserScript==
 
@@ -51,8 +51,8 @@ dark.insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1
 
 var script = document.createElement('script');
 script.type = "text/javascript";
-script.innerHTML = (<><![CDATA[
-
+main = (
+    function main() {
 
 
 $btn_row = $('#anal').parent()
@@ -480,5 +480,6 @@ eval(playlistUpdate.toString().replace(
 
 
 
-]]></>).toString();
+}).toString();
+script.innerHTML = main.substr(17, main.length - 18);
 document.getElementsByTagName('head')[0].appendChild(script);
