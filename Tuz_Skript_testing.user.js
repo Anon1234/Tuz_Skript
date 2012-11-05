@@ -15,7 +15,8 @@ css_style.innerHTML = '' +
     '.cvet{display:none}' +
     '.disabled{opacity:.9!important}' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
-    '.dot{text-decoration:none!important;border-bottom:1px dotted}'
+    '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
+    '.length{word-wrap: normal !important; width: 35px}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -34,12 +35,30 @@ main = (
     function main() {
 
 
+IS_FF = false;
+if (navigator.userAgent.indexOf("Firefox") != -1) {
+    IS_FF = true;
+}
+
+
+function whenAvailable(name, callback) {
+    var interval = 50; // ms
+    window.setTimeout(function() {
+        if (name) {
+            callback();
+        } else {
+            window.setTimeout(arguments.callee, interval);
+        }
+    }, interval);
+}
+
+
 $btn_row = $('#anal').parent()
 
 /* Custom Anal Settings Opts */
 aCfg = parseInt(get_cookie('anal'));
 
-$(function() {
+var opts_hack = function() {
    $('#anal').data('popover').options.content = '<hr>' +
         addOpt('Убрать хедер и футер', 0x100000) +
         addOpt('Смишнявые надписи', 0x200000) +
@@ -54,7 +73,12 @@ $(function() {
 //        addOpt('Opt 10', 0x40000000) +
         '<hr>' +
        $('#anal').data('popover').options.content
-   })
+   }
+
+if (IS_FF)
+    $(opts_hack);
+else
+    whenAvailable($('#anal').data('popover'), opts_hack);
 
 
 /* json in localstorage */
@@ -220,21 +244,6 @@ if (aCfg & 0x800000 ) {
 }
 
 
-/* Remove Header and Footer */
-if (aCfg & 0x100000) {
-    $(function() {
-        $('.navbar').remove()
-        //$($('div.mb').get(0)).remove()
-        $('.nav').remove()
-        $('.push').remove()
-        $('.footer').remove()
-        $('.container').css('padding-top', '15px')
-        $('.jwrapper').height(($('.jwrapper').height() + 10) + 'px')
-        $('.btn.btn-small.btn-inverse.dropdown-toggle').remove()
-        auto_resize()
-    })
-}
-
 
 // remove player
 if (aCfg & 0x400000) {
@@ -252,6 +261,19 @@ $('link[rel="shortcut icon"]').addClass('favicon')
     $('.container').addClass("semi_transparent")
 else
     $('.container:eq(1)').addClass("semi_transparent")*/
+
+
+/* Remove Header and Footer */
+if (aCfg & 0x100000) {
+        $('.navbar').remove();
+        $('.nav').remove();
+        $('.push').remove();
+        $('.footer').remove();
+        $('.container').css('padding-top', '15px');
+        $('.jwrapper').height(($('.jwrapper').height() + 10) + 'px');
+        $('.btn.btn-small.btn-inverse.dropdown-toggle').remove();
+        auto_resize();
+}
 
 
 /* Smischnie nadpisi %%dlya Mikuru%% */
@@ -301,15 +323,13 @@ if (aCfg & 0x200000) {
 
     });
     }
-
+    alert(123)
     $('#lsnrs').parent().html($('#lsnrs').parent().html().replace('Слушают', 'Лохи'))
     $('#upload_song').html($('#upload_song').html().replace('Загрузить трек в плейлист', 'Насрать в плейлист'))
     //$('#btns').html($('#btns').html().replace('Очистить игнор-лист', 'Разигнорить'))
     if (!(aCfg & 0x400000)) {
-        $(function() {
-            $('#lsn-btn').html($('#lsn-btn').html().replace('Слушать радио на сайте', 'Покушать здеся'))
-            $('.pull-left a.btn').html($('.pull-left a.btn').html().replace('Слушать в плеере (mp3, 192 кбит)', 'Покушать из тапки'))
-        })
+            $('#lsn-btn').html($('#lsn-btn').html().replace('Слушать радио на сайте', 'Покушать здеся'));
+            $('.pull-left a.btn').html($('.pull-left a.btn').html().replace('Слушать в плеере (mp3, 192 кбит)', 'Покушать из тапки'));
     }
 }
 
@@ -437,6 +457,9 @@ function playlistUpdate() {
 // --------
 (i ? '<tr onmouseover="this.children[2].innerHTML=count_time_to(this)" onmouseout="this.children[2].innerHTML=\'' + item.length + '\'">' : '<tr>') +
 // --------
+// --------
+//(i ? '<tr onmouseover="$(this).tooltip({title: count_time_to(this), placement: \'right\', animation: false})">' : '<tr>') +
+// --------
                 '<td class="cover"><a href="' + cover_href + '" class="thumbnail"><img src="'+cover+'"></a></td><td class="title">'+item.str+'</td><td class="length">'+item.length+'</td></td>');
         });
         var score = (data['score'] < 0 ) ? '<span style="color:red;">' + data['score'] + '</span>' : ( (data['score'] > 0) ?  '<span style="color:green;">+' + data['score'] + '</span>' : ' ' + data['score']);
@@ -454,14 +477,14 @@ function playlistUpdate() {
         $('#lsnrs').html(data['lsnrs']);
 // --------
 if (aCfg & 0x200000) {
-    data.fill.replace('Плейлист заполнен', 'Плейлист засран')
+    data.fill = data.fill.replace('Плейлист заполнен', 'Плейлист засран');
 }
 // --------
         $('#fill').html(data['fill']);
 // --------
 var p_votes = (parseInt(data.votes) + parseInt(data.score)) / 2;
 var n_votes = parseInt(data.votes) - p_votes;
-$("#voting .sub").attr("title", "За: " + p_votes + "  Против: " + n_votes);
+$("#voting .sub").attr("title", "За: " + p_votes + "  Против: " + n_votes).tooltip({placement: "bottom"});
 // --------
 
     });
@@ -577,6 +600,13 @@ body += '<span onclick="name_prompt(\'' + data.user_id + '\')" class="tuz_hack r
         }
   }
 }
+
+
+$("#chat").html("");
+lastMsg = 0
+check_data();
+
+playlistUpdate();
 
 }).toString();
 script.innerHTML = main.substr(17, main.length - 18);
