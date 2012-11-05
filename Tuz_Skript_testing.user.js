@@ -15,8 +15,8 @@ css_style.innerHTML = '' +
     '.cvet{display:none}' +
     '.disabled{opacity:.9!important}' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
-    '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
-    '.length{word-wrap: normal !important; width: 35px}'
+    '.dot{text-decoration:none!important;border-bottom:1px dotted}'
+    //'.length{word-wrap: normal !important; width: 35px}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -279,9 +279,8 @@ if (aCfg & 0x100000) {
 
 /* Smischnie nadpisi %%dlya Mikuru%% */
 if (aCfg & 0x200000) {
-
-    function check_data(){
-    On();
+    function check_data_(){
+On();
     $.getJSON("/?app=chat", {last: lastMsg}, function(data){
     Off();
         if (data['user_cnt'] > 2){
@@ -323,8 +322,9 @@ if (aCfg & 0x200000) {
 
 
     });
-    }
-    alert(123)
+}
+    check_data = check_data_;
+
     $('#lsnrs').parent().html($('#lsnrs').parent().html().replace('Слушают', 'Лохи'))
     $('#upload_song').html($('#upload_song').html().replace('Загрузить трек в плейлист', 'Насрать в плейлист'))
     //$('#btns').html($('#btns').html().replace('Очистить игнор-лист', 'Разигнорить'))
