@@ -256,6 +256,7 @@ if (aCfg & 0x400000) {
 $($btn_row).wrap('<div id="btns" class="btn-toolbar" />')
 $(".span8 .clearfix").css('margin-bottom', '5px')
 $('link[rel="shortcut icon"]').addClass('favicon')
+$(".dropdown-toggle").remove();
 
 /*if (aCfg & 0x100000)
     $('.container').addClass("semi_transparent")
@@ -377,7 +378,7 @@ function switch_anime_bg() {
 
 if (aCfg & 0x1000000) {
     set_anime_bg()
-    $(".btn-group").after('<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>')
+    $("#btns .btn-group").after('<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>')
 }
 /**********************/
 
