@@ -4,8 +4,8 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.1
-// @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.meta.js
+// @version     2.8.2
+// @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // ==/UserScript==
 
 var css_style = document.createElement('style')
