@@ -45,15 +45,6 @@ function whenAvailable(name, callback) {
 }
 
 
-/*$(function(){
-    for (var i = 0; i < document.styleSheets.length; i++) {
-        if (document.styleSheets[i].title == "neutron") {
-            dark = document.styleSheets[i]
-            dark.insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)
-        }
-    }
-});*/
-
 
 $btn_row = $('#anal').parent()
 
@@ -614,6 +605,7 @@ $("#chat").html("");
 lastMsg = 0
 check_data();
 
+$('.playlist table').html("");
 playlistUpdate();
 
 }).toString();
