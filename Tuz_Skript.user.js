@@ -16,8 +16,8 @@ css_style.innerHTML = '' +
     '.cvet{display:none}' +
     '.disabled{opacity:.9!important}' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
-    '.dot{text-decoration:none!important;border-bottom:1px dotted}'
-    //'.length{word-wrap: normal !important; width: 35px}'
+    '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
+    '.length{word-wrap: normal !important; width: 40px}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -224,14 +224,15 @@ function switch_bg(dir) {
     document.body.style.backgroundImage = 'url("' + BG_BASE_URL + BACKGROUNDS[bg_list_index] + '")'
 }
 
-
-$($btn_row).append(
-    '<span class="btn-group">' +
-        '<button class="btn btn-mini" onclick="switch_bg(-1)"><i class="icon-arrow-left"></i></button>' +
-        '<button class="btn btn-mini" onclick="prompt_bg_image(); return false;"><i class="icon-th-large"></i> Фон</button>' +
-        '<button class="btn btn-mini" onclick="switch_bg(1)"><i class="icon-arrow-right"></i></button>' +
-    '</span>'
+if (!(aCfg & 0x1000000)) {
+    $btn_row.append(
+        '<span class="btn-group">' +
+            '<button class="btn btn-mini" onclick="switch_bg(-1)"><i class="icon-arrow-left"></i></button>' +
+            '<button class="btn btn-mini" onclick="prompt_bg_image(); return false;"><i class="icon-th-large"></i> Фон</button>' +
+            '<button class="btn btn-mini" onclick="switch_bg(1)"><i class="icon-arrow-right"></i></button>' +
+        '</span>'
     )
+}
 
 /*********************************/
 
@@ -269,7 +270,6 @@ if (aCfg & 0x100000) {
         $('.push').remove();
         $('.footer').remove();
         $('.container').css('padding-top', '15px');
-        $('.jwrapper').height(($('.jwrapper').height() + 10) + 'px');
         $('.btn.btn-small.btn-inverse.dropdown-toggle').remove();
         auto_resize();
 }
@@ -382,8 +382,10 @@ function change_op() {
 
 if (aCfg & 0x1000000) {
     set_anime_bg()
-    $("#btns .btn-group").after('<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>')
-    $("#btns .btn-group").after('<button class="btn btn-mini" onclick="change_op()"><i class="icon-font"></i></button>')
+    $btn_row.find(".btn:eq(3)").after(
+        '<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>' +
+        '<button class="btn btn-mini" onclick="change_op()"><i class="icon-font"></i></button>'
+    )
 }
 /**********************/
 
