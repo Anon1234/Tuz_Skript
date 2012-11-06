@@ -450,16 +450,14 @@ function playlistUpdate() {
         $pl = $('.playlist table');
         $pl.html('');
         $.each(data.songs, function(i, item) {
-            cover_href = item.cover_big ? "javascript:openImg('" + item.cover_big + "');" : 'javascript:void(0);';
+            cover_act = item.cover_big ? "openImg('" + item.cover_big + "');return false;" : 'void(0);';
+            cover_href = item.cover_big ? item.cover_big : 'javascript:void(0);';
             cover = item.cover ? item.cover : '/img/nocover.png';
             $pl.append(
 // --------
 (i ? '<tr onmouseover="this.children[2].innerHTML=count_time_to(this)" onmouseout="this.children[2].innerHTML=\'' + item.length + '\'">' : '<tr>') +
 // --------
-// --------
-//(i ? '<tr onmouseover="$(this).tooltip({title: count_time_to(this), placement: \'right\', animation: false})">' : '<tr>') +
-// --------
-                '<td class="cover"><a href="' + cover_href + '" class="thumbnail"><img src="'+cover+'"></a></td><td class="title">'+item.str+'</td><td class="length">'+item.length+'</td></td>');
+                '<td class="cover"><a onclick="'+ cover_act +'" href="' + cover_href + '" class="thumbnail"><img src="'+cover+'"></a></td><td class="title">'+item.str+'</td><td class="length">'+item.length+'</td></td>');
         });
         var score = (data['score'] < 0 ) ? '<span style="color:red;">' + data['score'] + '</span>' : ( (data['score'] > 0) ?  '<span style="color:green;">+' + data['score'] + '</span>' : ' ' + data['score']);
         if(data['tags']) {
