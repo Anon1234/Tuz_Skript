@@ -4,50 +4,22 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.7.3
+// @version     2.8.1
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.meta.js
 // ==/UserScript==
 
 var css_style = document.createElement('style')
 css_style.type = "text/css"
-css_style.innerHTML = (<><![CDATA[
-
-
-.r4 {
-    border-radius: 8px;
-}
-
-.tuz_hack {
-    font-family: Courier New;
-    font-size: 11px;
-    color: white;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41Ljg3O4BdAAAAQklEQVQYVxXEoQ5AAAAFwDebTRAURVEkRZIURVEUQbDZ/P9HcOEuSYpfSlWq1ahVp16DRk2atWjVpl2HTl269ej9AJF0BE7FA3MyAAAAAElFTkSuQmCC);
-}
-
-.cvet {
-    display: none;
-}
-
-.disabled {
-    opacity: 0.9 !important;
-}
-
-.semi_transparent {
-    background: rgba(255, 255, 255, 0.882);
-    padding: 18px;
-}
-
-.dot {
-    text-decoration: none !important;
-    border-bottom: 1px dotted;
-}
-
-
-]]></>).toString()
+css_style.innerHTML = '' +
+    '.r4{border-radius:8px}' +
+    '.tuz_hack{font-family:Courier New;font-size:11px;color:white;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41Ljg3O4BdAAAAQklEQVQYVxXEoQ5AAAAFwDebTRAURVEkRZIURVEUQbDZ/P9HcOEuSYpfSlWq1ahVp16DRk2atWjVpl2HTl269ej9AJF0BE7FA3MyAAAAAElFTkSuQmCC)}' +
+    '.cvet{display:none}' +
+    '.disabled{opacity:.9!important}' +
+    '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
+    '.dot{text-decoration:none!important;border-bottom:1px dotted}'
+    //'.length{word-wrap: normal !important; width: 35px}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
-dark = document.styleSheets[2]
-dark.insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)
 
 var script = document.createElement('script');
 script.type = "text/javascript";
@@ -55,12 +27,40 @@ main = (
     function main() {
 
 
+IS_FF = false;
+if (navigator.userAgent.indexOf("Firefox") != -1) {
+    IS_FF = true;
+}
+
+
+function whenAvailable(name, callback) {
+    var interval = 50; // ms
+    window.setTimeout(function() {
+        if (name) {
+            callback();
+        } else {
+            window.setTimeout(arguments.callee, interval);
+        }
+    }, interval);
+}
+
+
+/*$(function(){
+    for (var i = 0; i < document.styleSheets.length; i++) {
+        if (document.styleSheets[i].title == "neutron") {
+            dark = document.styleSheets[i]
+            dark.insertRule(".disabled { border-color: #393939; }", dark.cssRules.length - 1)
+        }
+    }
+});*/
+
+
 $btn_row = $('#anal').parent()
 
 /* Custom Anal Settings Opts */
 aCfg = parseInt(get_cookie('anal'));
 
-$(function() {
+var opts_hack = function() {
    $('#anal').data('popover').options.content = '<hr>' +
         addOpt('Убрать хедер и футер', 0x100000) +
         addOpt('Смишнявые надписи', 0x200000) +
@@ -75,7 +75,12 @@ $(function() {
 //        addOpt('Opt 10', 0x40000000) +
         '<hr>' +
        $('#anal').data('popover').options.content
-   })
+   }
+
+if (IS_FF)
+    $(opts_hack);
+else
+    whenAvailable($('#anal').data('popover'), opts_hack);
 
 
 /* json in localstorage */
@@ -137,12 +142,6 @@ function count_time_to(track){
     time = (time > 0) ? time : 0
     return "+" + stt(time)
 }
-
-
-eval(playlistUpdate.toString().replace(
-    "$pl.append(\"<tr>",
-    "$pl.append((i ? \"<tr onmouseover=\\\"this.children[2].innerHTML=count_time_to(this)\\\" onmouseout=\\\"this.children[2].innerHTML='\" + item.length + \"'\\\">\" : \"<tr>\") + \""
-    ))
 /*********************************/
 
 
@@ -177,12 +176,6 @@ function showLocalStorage() {
     s += "&nbsp;<button class='btn btn-mini' onclick='$(this).parent().remove(); return false'>Закрыть</button>"
     newSysMessageData(s)
 }
-
-
-eval(newMessageData.toString().replace(
-    'if ((aCfg & 16) == 0) {',
-    'if ((aCfg & 16) == 0) { body += \'<span onclick="name_prompt(\\\'\' + data.user_id + \'\\\')" class="tuz_hack r4" style="background-color: #\' + data.user_id + \';">&nbsp;<span class="\' + data.user_id + \'">\' + uid_to_name(data.user_id) + \'</span>&nbsp;</span> \';'
-))
 
 
 $($btn_row).append('<button class="btn btn-mini" onclick="showLocalStorage()"><i class="icon-list-alt"></i></button>')
@@ -253,25 +246,10 @@ if (aCfg & 0x800000 ) {
 }
 
 
-/* Remove Header and Footer */
-if (aCfg & 0x100000) {
-    $(function() {
-        $('.navbar').remove()
-        //$($('div.mb').get(0)).remove()
-        $('.nav').remove()
-        $('.push').remove()
-        $('.footer').remove()
-        $('.container').css('padding-top', '15px')
-        $('.jwrapper').height(($('.jwrapper').height() + 10) + 'px')
-        $('.btn.btn-small.btn-inverse.dropdown-toggle').remove()
-        auto_resize()
-    })
-}
-
 
 // remove player
 if (aCfg & 0x400000) {
-    $('div.mb:eq(1)').remove()
+    $("#lsn-btn").parents('.mb').remove()
     //auto_resize()
 }
 
@@ -280,24 +258,27 @@ if (aCfg & 0x400000) {
 $($btn_row).wrap('<div id="btns" class="btn-toolbar" />')
 $(".span8 .clearfix").css('margin-bottom', '5px')
 $('link[rel="shortcut icon"]').addClass('favicon')
+$(".dropdown-toggle").remove();
 
-/*if (aCfg & 0x100000)
-    $('.container').addClass("semi_transparent")
-else
-    $('.container:eq(1)').addClass("semi_transparent")*/
+
+
+/* Remove Header and Footer */
+if (aCfg & 0x100000) {
+        $('.navbar').remove();
+        $('.nav').remove();
+        $('.push').remove();
+        $('.footer').remove();
+        $('.container').css('padding-top', '15px');
+        $('.jwrapper').height(($('.jwrapper').height() + 10) + 'px');
+        $('.btn.btn-small.btn-inverse.dropdown-toggle').remove();
+        auto_resize();
+}
 
 
 /* Smischnie nadpisi %%dlya Mikuru%% */
 if (aCfg & 0x200000) {
-    eval(playlistUpdate.toString().replace("data.fill", "data.fill.replace('Плейлист заполнен', 'Плейлист засран')"))
-
-    function tst(){
-        var tmp = "Тест"
-    }
-
-
-    function check_data(){
-    On();
+    function check_data_(){
+On();
     $.getJSON("/?app=chat", {last: lastMsg}, function(data){
     Off();
         if (data['user_cnt'] > 2){
@@ -339,16 +320,15 @@ if (aCfg & 0x200000) {
 
 
     });
-    }
+}
+    check_data = check_data_;
 
     $('#lsnrs').parent().html($('#lsnrs').parent().html().replace('Слушают', 'Лохи'))
     $('#upload_song').html($('#upload_song').html().replace('Загрузить трек в плейлист', 'Насрать в плейлист'))
     //$('#btns').html($('#btns').html().replace('Очистить игнор-лист', 'Разигнорить'))
     if (!(aCfg & 0x400000)) {
-        $(function() {
-            $('#lsn-btn').html($('#lsn-btn').html().replace('Слушать радио на сайте', 'Покушать здеся'))
-            $('.pull-left a.btn').html($('.pull-left a.btn').html().replace('Слушать в плеере (mp3, 192 кбит)', 'Покушать из тапки'))
-        })
+            $('#lsn-btn').html($('#lsn-btn').html().replace('Слушать радио на сайте', 'Покушать здеся'));
+            $('.pull-left a.btn').html($('.pull-left a.btn').html().replace('Слушать в плеере (mp3, 192 кбит)', 'Покушать из тапки'));
     }
 }
 
@@ -377,8 +357,8 @@ $($btn_row).append(
     '</div>'
     )
 
-/* testing */
 
+/* anime backgrounds */
 var delete_cookie = function(name) {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
@@ -394,15 +374,21 @@ function switch_anime_bg() {
     set_anime_bg()
 }
 
+CONTAINER_OPACITY = 1;
+function change_op() {
+    (CONTAINER_OPACITY ? $(".container").css("opacity", "0.5") : $(".container").css("opacity", "1"));
+    CONTAINER_OPACITY = !CONTAINER_OPACITY;
+}
+
 if (aCfg & 0x1000000) {
     set_anime_bg()
-    // ну ты понел
-    $(".btn-group").after('<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>')
+    $("#btns .btn-group").after('<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>')
+    $("#btns .btn-group").after('<button class="btn btn-mini" onclick="change_op()"><i class="icon-font"></i></button>')
 }
+/**********************/
 
 
 /* new post notif like kukloskript */
-
 ICON_ON = true;
 BLANK_ICON = 'data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQEAYAAABPYyMiAAAABmJLR0T///////8JWPfcAAAACXBIWXMAAABIAAAASABGyWs+AAAAF0lEQVRIx2NgGAWjYBSMglEwCkbBSAcACBAAAeaR9cIAAAAASUVORK5CYII='
 ORIG_ICON = $('.favicon').attr('href')
@@ -427,12 +413,6 @@ function favicon_off_on() {
     document.getElementsByTagName('head')[0].appendChild(link);
 
 }
-
-
-eval(newMessageData.toString().replace(
-    'if (leaved) {',
-    'if (leaved) { ++NEW_POSTS; '
-    ))
 
 
 function new_msg_show() {
@@ -470,15 +450,169 @@ if ((aCfg & 0x4000000) && !(aCfg & 0x400000)) {
 }
 
 
-/* Подсчет плюсонувших и минусонувших */
-eval(playlistUpdate.toString().replace(
-    /\}\);\n\}$/,
-    'var p_votes = (parseInt(data.votes) + parseInt(data.score)) / 2;' +
-    'var n_votes = parseInt(data.votes) - p_votes;' +
-    '$("#voting .sub").attr("title", "За: " + p_votes + "  Против: " + n_votes); });\n}$'
-))
+function playlistUpdate() {
+    $.getJSON('/?app=playlist', function(data) {
+        sec_total = parseInt(data['length_sec']);
+        sec_past = parseInt(data['past']);
+        $pl = $('.playlist table');
+        $pl.html('');
+        $.each(data.songs, function(i, item) {
+            cover_href = item.cover_big ? "javascript:openImg('" + item.cover_big + "');" : 'javascript:void(0);';
+            cover = item.cover ? item.cover : '/img/nocover.png';
+            $pl.append(
+// --------
+(i ? '<tr onmouseover="this.children[2].innerHTML=count_time_to(this)" onmouseout="this.children[2].innerHTML=\'' + item.length + '\'">' : '<tr>') +
+// --------
+// --------
+//(i ? '<tr onmouseover="$(this).tooltip({title: count_time_to(this), placement: \'right\', animation: false})">' : '<tr>') +
+// --------
+                '<td class="cover"><a href="' + cover_href + '" class="thumbnail"><img src="'+cover+'"></a></td><td class="title">'+item.str+'</td><td class="length">'+item.length+'</td></td>');
+        });
+        var score = (data['score'] < 0 ) ? '<span style="color:red;">' + data['score'] + '</span>' : ( (data['score'] > 0) ?  '<span style="color:green;">+' + data['score'] + '</span>' : ' ' + data['score']);
+        if(data['tags']) {
+            $pl.find('tr:first .title').append('<div class="small sub">'+data['tags']+'</div>');
+        }
+        if(data['canvote'] == true) {
+            $pl.find('tr:first .title').append('<div><i onclick="vote(1);" class="icon-thumbup-active" alt="+" title="+1" style="cursor:pointer"></i><span id="voting">&nbsp;&nbsp;' + score + '&nbsp;<span class="sub">(' + data['votes'] + ')</span>&nbsp;&nbsp;</span><i onclick="vote(2);" class="icon-thumbdown-active" alt="-" title="-1" style="cursor:pointer"></i></div>');
+        }
+        else {
+            $pl.find('tr:first .title').append('<div><i class="icon-thumbup" alt="+" title="+1"></i><span id="voting">&nbsp;&nbsp;' + score + '&nbsp;<span class="sub">(' + data['votes'] + ')</span>&nbsp;&nbsp;</span><i class="icon-thumbdown" alt="-" title="-1"></i></div>');
+        }
+        $pl.find('tr:first .title').append('<div><progress id="prog" max="100" value="'+dt+'"></progress></div>');
+        $pl.find('tr:first .length').append('<div><img src="/img/icon_eq.gif" title="Играет сейчас" alt=""></div><div><a href="'+data['url']+'" title="Скачать"><i class="icon-download-alt"></i></a></div>');
+        $('#lsnrs').html(data['lsnrs']);
+// --------
+if (aCfg & 0x200000) {
+    data.fill = data.fill.replace('Плейлист заполнен', 'Плейлист засран');
+}
+// --------
+        $('#fill').html(data['fill']);
+// --------
+var p_votes = (parseInt(data.votes) + parseInt(data.score)) / 2;
+var n_votes = parseInt(data.votes) - p_votes;
+$("#voting .sub").attr("title", "За: " + p_votes + "  Против: " + n_votes).tooltip({placement: "bottom"});
+// --------
+
+    });
+}
 
 
+function newMessageData(data){
+    if (jQuery.inArray(data['user_id'], ignoreArray) < 0 && $('#msg' + data['id']).length == 0) {
+
+        whoSet = data['id'];
+        var color = '#' + data['user_id'];
+        var text = data['text'];
+        if (text.length > 256) {
+            var text_pre = '<a href="#" onclick="$(\'#more' + data['id'] + '\').show(); $(this).hide(); return false;"> ...</a><span id="more' + data['id'] + '" style="display:none;">' + text.substr(256, text.length) + '</span>';
+            text = text.substr(0, 256);
+        }
+        else { var text_pre = ''}
+
+        if ((aCfg & 1) > 0){
+            text = text.replace(new RegExp("\\){2,20}",'g'), '');
+            text = text.replace(new RegExp("\\({2,20}",'g'), '');
+        }
+
+        //ссылки
+        maxcnt = 0;
+        text = text.replace(new RegExp("\\@([0-9]+)",'g'), replacer);
+        text = text.replace(new RegExp("^\\!#([0-9]+)",'g'), replacer2);
+
+        if ((aCfg & 4) == 0){
+            // разметка (**     **)
+            text = text.replace(new RegExp("\\*\\*(.+?)\\*\\*",'g'), '<span class="bld">$1</span>');
+            // разметка (*       *)
+            text = text.replace(new RegExp("\\*(.+?)\\*",'g'), '<span class="itl">$1</span>');
+            // разметка (%%     %%)
+            text = text.replace(new RegExp("%%(.+?)%%",'g'), '<span class="spl">$1</span>');
+            // разметка ([s]  [/s])
+            text = text.replace(new RegExp("\\[s\\](.+?)\\[/s\\]",'g'), '<span class="str">$1</span>');
+            // разметка ([u]  [/u])
+            text = text.replace(new RegExp("\\[u\\](.+?)\\[/u\\]",'g'), '<span class="undr">$1</span>');
+            //разметка синий
+            //text = text.replace(new RegExp("^//(.*)",'g'), '<span class="blue">$1</span>');
+        }
+        // цитаты
+        if (text.search(new RegExp("&gt;(.+)//(.+?)",'g'), '<span class="unkfunc">&gt;$1</span>$2') != -1 ) {
+            text = text.replace(new RegExp("&gt;(.+)//(.+?)",'g'), '<span class="unkfunc">&gt;$1</span>$2');
+        }
+        else {
+            text = text.replace(new RegExp("&gt;(.*)",'g'), '<span class="unkfunc">&gt;$1</span>');
+        }
+
+        var video = null;
+        if((aCfg & 32) == 0 && !data['picture']) {
+        var youtube = /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%;#\w]*(?:['"][^<>]*>|<\/a>))[?=&;#+%\w-]*/ig;
+            video = youtube.exec(text);
+            if(video != null) {
+                var video_id = video[1];
+                text = text.replace(youtube, '');
+            }
+        }
+
+        text = text.replace(new RegExp("(https?://\\S+)",'g'), '<a href="$1" target="_blank">$1</a>');
+
+        text += text_pre;
+
+        var body = '<div class="somemsg" id="msg' + data['id'] + '" name="'+data['user_id']+'">';
+        body += '<div class="msg-actions pull-right">&nbsp;<i class="icon-remove" onclick="ignoreUser(\''+data['user_id']+'\','+data['id']+');" title="Игнорировать" style="cursor:pointer;"></i>&nbsp;<i class="icon-envelope" onclick="reply_to(event, \'' + data['id'] + '\', \'!#\');" title="Отправить личное сообщение" style="cursor:pointer;"></i></div>';
+
+        if(data['ip'] != null) {
+            body += '<input class="adm" type="radio" name="id" value="'+data['id']+'">&nbsp;';
+        }
+
+        body += '<span class="cvet" style="background-color:'+color+'" title="ID: '+data['user_id']+'"></span>&nbsp;';
+        body += '<span class="somemsg_id" onclick="reply_to(event, \'' + data['id'] + '\', \'@\');">#' + data['id'] + '</span>&nbsp;';
+
+        if(data['ip'] != null) {
+            body += '<span class="msgtime">[' + data['ip'] + ']</span>&nbsp;';
+        }
+// -------
+body += '<span onclick="name_prompt(\'' + data.user_id + '\')" class="tuz_hack r4" style="background-color: #' + data.user_id + ';">&nbsp;<span class="' + data.user_id + '">' + uid_to_name(data.user_id) + '</span>&nbsp;</span>&nbsp;'
+// -------
+        if((aCfg & 16) == 0) {
+            body += '<span class="msgtime">' + data['time'] + '</span> ';
+        }
+
+        body += '<span class="msgtext">' + text + '</span>';
+
+        if(data['picture'] != null) {
+            if((aCfg & 8) == 0) {
+                body += '<div class="pct"><img src="' + data['picture']['thumburl'] + '" class="min" alt="'+data.id+'" style="width:'+data.picture.thumbw+'px;height:'+data.picture.thumbh+'px;" onclick="expandimg('+data.id+', \''+data.picture.imgurl+'\', \''+data.picture.thumburl+'\', '+data.picture.imgw+', '+data.picture.imgh+', '+data.picture.thumbw+', '+data.picture.thumbh+');" ></div>';
+            }
+            body += '<div class="filesize">Файл: <a target="_blank" href="' + data['picture']['imgurl'] + '">' + data['picture']['name'] + '</a> - (' + data['picture']['filedata']  + ')</div>';
+        }
+
+        if(video != null) {
+            body += '<div class="vid" onclick="watchVideo(this, \''+ video_id +'\');"><img src="http://i.ytimg.com/vi/' + video_id + '/0.jpg" alt="'+video_id+'" style="width:120px;height:80px;" /></div>';
+            body += '<div class="filesize"><a target="_blank" href="http://www.youtube.com/watch?v=' + video_id + '">YouTube</a></div>';
+        }
+
+
+      $('#chat').append(body);
+
+        if(data['type'] == 'pvt') {
+            $('#msg' + data['id']).find('.somemsg_id').addClass('pvt').attr('onclick', 'reply_to(event, \'' + data['id'] + '\', \'!#\');');
+        }
+
+        if (leaved) {
+// -------
+++NEW_POSTS;
+// -------
+            if (int_timer == -1) {
+                int_timer = setInterval('new_msg_show()', 1000);
+            }
+        }
+  }
+}
+
+
+$("#chat").html("");
+lastMsg = 0
+check_data();
+
+playlistUpdate();
 
 }).toString();
 script.innerHTML = main.substr(17, main.length - 18);
