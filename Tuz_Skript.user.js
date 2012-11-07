@@ -181,7 +181,7 @@ $($btn_row).append('<button class="btn btn-mini" onclick="showLocalStorage()"><i
 
 
 function deleteMessage(id){
-    $('#msg' + id).append('&nbsp;<span style="color: red; font-size: 12px;">(анальная мочерация)</span>');
+    $('#msg' + id).find(".somemsg_id").after('&nbsp;<span class="label label-important">Удалено</span>');
 }
 
 /******** set background ********/
