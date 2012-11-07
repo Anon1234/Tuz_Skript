@@ -18,7 +18,8 @@ css_style.innerHTML = '' +
     '.disabled{opacity:.9!important}' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
     '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
-    '.length{word-wrap: normal !important; width: 40px}'
+    '.length{word-wrap: normal !important; width: 40px}' +
+    '.vid { width: 120px; }'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
