@@ -149,11 +149,11 @@ function update_name(uid) {
 
 
 function name_prompt(uid) {
-    text = "Введите новое имя для " + uid_to_name(uid) + " (" + uid + "):"
-    name = prompt(text, uid_to_name(uid))
+    var text = "Введите новое имя для " + uid_to_name(uid) + " (" + uid + "):";
+    var name = prompt(text, uid_to_name(uid));
     if (name) {
-        localStorage[uid] = name
-        update_name(uid)
+        localStorage[uid] = name;
+        update_name(uid);
     }
 }
 
