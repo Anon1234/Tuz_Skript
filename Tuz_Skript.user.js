@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.5
+// @version     2.8.6
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -385,6 +385,7 @@ function change_op() {
 }
 
 if (aCfg & 0x1000000) {
+    $("body").css("background-size", "cover");
     set_anime_bg();
     $btn_row.find(".btn:eq(3)").after(
         '<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>' +
