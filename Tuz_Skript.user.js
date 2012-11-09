@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.6
+// @version     2.8.7
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -378,14 +378,19 @@ function switch_anime_bg() {
     set_anime_bg();
 }
 
-CONTAINER_OPACITY = 1;
+var OPACITY = ls_get('opacity') || 100;
 function change_op() {
-    (CONTAINER_OPACITY ? $(".container").css("opacity", "0.5") : $(".container").css("opacity", "1"));
-    CONTAINER_OPACITY = !CONTAINER_OPACITY;
+    var step = 10;
+    OPACITY -= step;
+    if (OPACITY - step < 0)
+        OPACITY = 100;
+    $(".container").css("opacity", OPACITY / 100);
+    ls_set('opacity', OPACITY);
 }
 
 if (aCfg & 0x1000000) {
     $("body").css("background-size", "cover");
+    $(".container").css("opacity", OPACITY / 100);
     set_anime_bg();
     $btn_row.find(".btn:eq(3)").after(
         '<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>' +
