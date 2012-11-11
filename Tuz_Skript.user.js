@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.7
+// @version     2.8.8
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -18,8 +18,7 @@ css_style.innerHTML = '' +
     '.disabled{opacity:.9!important}' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
     '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
-    '.length{word-wrap: normal !important; width: 40px}' +
-    '.vid { width: 120px; }'
+    '.length{word-wrap: normal !important; width: 40px}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
