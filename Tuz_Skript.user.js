@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.8
+// @version     2.8.9
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -594,7 +594,7 @@ body += '<span onclick="name_prompt(\'' + data.user_id + '\')" class="tuz_hack r
         }
 
         if(video != null) {
-            body += '<div class="vid" onclick="watchVideo(this, \''+ video_id +'\');"><img src="http://i.ytimg.com/vi/' + video_id + '/0.jpg" alt="'+video_id+'" style="width:120px;height:80px;" /></div>';
+            body += '<div class="vid"><img src="http://i.ytimg.com/vi/' + video_id + '/0.jpg" alt="'+video_id+'" style="width:120px;height:80px;" onclick="watchVideo(this, \''+ video_id +'\');" /></div>';
             body += '<div class="filesize"><a target="_blank" href="http://www.youtube.com/watch?v=' + video_id + '">YouTube</a></div>';
         }
 
