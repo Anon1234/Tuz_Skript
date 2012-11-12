@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.9
+// @version     2.8.10
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -60,8 +60,8 @@ var opts_hack = function() {
         addOpt('Смишнявые надписи', 0x200000) +
         addOpt('Убрать плеер', 0x400000) +
         addOpt('Переместить инфу в ряд кнопок', 0x800000) +
-        addOpt('Я - ЕБАНОЕ АНИМЕ, ПУСТЬ ВСЕ ВИДЯТ', 0x1000000) +
-        addOpt('Плейлист нахуй', 0x2000000) +
+        addOpt('Включить анимешные фоны', 0x1000000) +
+        addOpt('Убрать плейлист', 0x2000000) +
         addOpt('Убрать только вторую кнопку из плеера', 0x4000000) +
 //        addOpt('Opt 7', 0x8000000) +
 //        addOpt('Opt 8', 0x10000000) +
