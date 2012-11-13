@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.10
+// @version     2.8.11
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -18,7 +18,8 @@ css_style.innerHTML = '' +
     '.disabled{opacity:.9!important}' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
     '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
-    '.length{word-wrap: normal !important; width: 40px}'
+    '.length{word-wrap: normal !important; width: 40px}' +
+    '#mess {z-index: 9999;}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -461,6 +462,43 @@ if ((aCfg & 0x4000000) && !(aCfg & 0x400000)) {
 }
 
 
+/* Просмотр истории сообщений */
+
+$('.container').append(
+    '<div id="history_modal" class="modal hide fade">' +
+        '<div class="modal-header">' +
+            '<button type="button" class="close" onclick="modal_close()" aria-hidden="true">&times;</button>' +
+        '</div>' +
+        '<div style="padding: 0;" class="modal-body">' +
+        '</div>' +
+    '</div>'
+);
+
+function find_posts(uid) {
+    var posts = "";
+    $('.' + uid).each(function (i) {
+        posts += $(this).parents('.somemsg')[0].outerHTML;
+    });
+    return posts;
+}
+
+function show_history(uid) {
+    $('#history_modal .modal-body').html(find_posts(uid));
+    $('#history_modal .modal-body').find('.msg-actions').remove();
+    $('#history_modal .modal-body').find('img').css('cursor', 'default').removeAttr('onclick');
+    $('#history_modal .modal-header').append(
+        '<h4>История сообщений ' + uid_to_name(uid) + '</h4>'
+    );
+    $('#history_modal').modal();
+}
+
+function modal_close() {
+    $('#history_modal .modal-body').html("");
+    $('#history_modal .modal-header').html('<button type="button" class="close" onclick="modal_close()" aria-hidden="true">&times;</button>');
+    $('#history_modal').modal('hide')
+}
+
+
 function playlistUpdate() {
     $.getJSON('/?app=playlist', function(data) {
         sec_total = parseInt(data['length_sec']);
@@ -565,7 +603,11 @@ function newMessageData(data){
         text += text_pre;
 
         var body = '<div class="somemsg" id="msg' + data['id'] + '" name="'+data['user_id']+'">';
-        body += '<div class="msg-actions pull-right">&nbsp;<i class="icon-remove" onclick="ignoreUser(\''+data['user_id']+'\','+data['id']+');" title="Игнорировать" style="cursor:pointer;"></i>&nbsp;<i class="icon-envelope" onclick="reply_to(event, \'' + data['id'] + '\', \'!#\');" title="Отправить личное сообщение" style="cursor:pointer;"></i></div>';
+        body += '<div class="msg-actions pull-right">' +
+            '&nbsp;<i class="icon-remove" onclick="ignoreUser(\''+data['user_id']+'\','+data['id']+');" title="Игнорировать" style="cursor:pointer;"></i>' +
+            '&nbsp;<i class="icon-envelope" onclick="reply_to(event, \'' + data['id'] + '\', \'!#\');" title="Отправить личное сообщение" style="cursor:pointer;"></i>' +
+            '&nbsp;<i class="icon-book" onclick="show_history(\'' + data.user_id + '\')" title="История постов" style="cursor:pointer;"></i>' +
+        '</div>';
 
         if(data['ip'] != null) {
             body += '<input class="adm" type="radio" name="id" value="'+data['id']+'">&nbsp;';
