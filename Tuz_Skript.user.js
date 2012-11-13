@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.11
+// @version     2.8.12
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -467,7 +467,8 @@ if ((aCfg & 0x4000000) && !(aCfg & 0x400000)) {
 $('.container').append(
     '<div id="history_modal" class="modal hide fade">' +
         '<div class="modal-header">' +
-            '<button type="button" class="close" onclick="modal_close()" aria-hidden="true">&times;</button>' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            '<h4>История сообщений <span id="history_name"></span></h4>' +
         '</div>' +
         '<div style="padding: 0;" class="modal-body">' +
         '</div>' +
@@ -486,17 +487,14 @@ function show_history(uid) {
     $('#history_modal .modal-body').html(find_posts(uid));
     $('#history_modal .modal-body').find('.msg-actions').remove();
     $('#history_modal .modal-body').find('img').css('cursor', 'default').removeAttr('onclick');
-    $('#history_modal .modal-header').append(
-        '<h4>История сообщений ' + uid_to_name(uid) + '</h4>'
-    );
+    $('#history_name').html(uid_to_name(uid));
     $('#history_modal').modal();
 }
 
-function modal_close() {
+$('#history_modal').on('hide', function() {
     $('#history_modal .modal-body').html("");
-    $('#history_modal .modal-header').html('<button type="button" class="close" onclick="modal_close()" aria-hidden="true">&times;</button>');
-    $('#history_modal').modal('hide')
-}
+    $('#history_name').html('');
+})
 
 
 function playlistUpdate() {
