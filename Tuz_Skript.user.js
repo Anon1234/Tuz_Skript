@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.12
+// @version     2.8.13
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -164,16 +164,80 @@ function name_prompt(uid) {
     }
 }
 
+$('.container').append(
+    '<div id="tuz_modal" class="modal hide fade">' +
+        '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            '<h3>Tuz Skript</h3>' +
+        '</div>' +
+        '<div style="padding: 0;" class="modal-body">' +
+            // баян
+            '<div class="accordion" id="accordion2">' +
+                 // начало группы
+                '<div class="accordion-group"> ' +
+                    '<div class="accordion-heading">' +
+                        '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">' +
+                            'LocalStorage' +
+                        '</a>' +
+                    '</div>' +
+                    '<div id="collapseOne" class="accordion-body collapse">' +
+                        '<div id="ls_here" class="accordion-inner">' +
+                            // содержимое
+                        '</div>' +
+                    '</div>' +
+                //конец группы
+                // начало группы
+                '<div class="accordion-group"> ' +
+                    '<div class="accordion-heading">' +
+                        '<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">' +
+                            'Статистика' +
+                        '</a>' +
+                    '</div>' +
+                    '<div id="collapseTwo" class="accordion-body collapse in">' +
+                        '<div id="stats_here" class="accordion-inner">' +
+                            // содержимое
+                        '</div>' +
+                    '</div>' +
+                //конец группы
+                '</div>' +
+            '</div>' +
+            // конец баяна
+        '</div>' +
+    '</div>'
+);
 
 function showLocalStorage() {
-    var s = "<h5>LocalStorage content:</h5><hr>";
+    var ls = "" +
+    '<table class="table table-hover table-condensed">' +
+        '<thead>' +
+            '<tr>' +
+                '<th>Ключ</th>' +
+                '<th>Значение</th>' +
+                '<th> </th>' +
+            '</tr>' +
+        '</thead>' +
+        '<tbody>';
+
     for (var k in localStorage) {
-        s += '<span><span onclick="delete localStorage[\'' + k + '\']; $(this).parent().remove();" title="Удалить" style="cursor:default;">[x]</span>&nbsp;';
-        s +=  k + ": " + localStorage[k] + "</span><br>";
+        if (typeof localStorage[k] == "function")
+            continue;
+        ls += '<tr>';
+        ls += '' +
+        '<td>' + k + '</td>' +
+        '<td>' + localStorage[k] + '</td>' +
+        '<td><button class="btn btn-warning btn-mini" type="button" onclick="delete localStorage[\'' + k + '\']; $(this).parent().remove();">Удалить</button></td>';
+        ls += '</tr>';
     }
-    s += "<hr><button class='btn btn-mini' onclick='localStorage.clear(); $(this).parent().remove(); return false'>Очистить</button>";
-    s += "&nbsp;<button class='btn btn-mini' onclick='$(this).parent().remove(); return false'>Закрыть</button>";
-    newSysMessageData(s);
+
+    ls += '' +
+        '</tbody>' +
+    '</table>';
+
+    ls += "<button class='btn btn-danger btn-mini' onclick='localStorage.clear(); $(this).parent().html(\"\"); return false'>Удалить все</button>";
+
+    $('#ls_here').html(ls);
+    $('#stats_here').html('<img src="' + get_graph_img() + '">');
+    $('#tuz_modal').modal();
 }
 
 
@@ -495,6 +559,35 @@ $('#history_modal').on('hide', function() {
     $('#history_modal .modal-body').html("");
     $('#history_name').html('');
 })
+
+
+/* График постов */
+function get_graph_img() {
+    var dict = {};
+    $("#chat .somemsg").each(function(i) {
+        var name = $(this).attr('name');
+        if (name in dict)
+            ++dict[name];
+        else
+            dict[name] = 1;
+    });
+
+    var chl = [];
+    var chd = [];
+    var chco = [];
+    for (k in dict) {
+        chl.push(uid_to_name(k));
+        chd.push(dict[k]);
+        chco.push(k);
+    }
+
+    return (
+        'http://chart.apis.google.com/chart?cht=p3&chs=510x300&chtt=Анонимусы говорят&' +
+        'chl=' + chl.join("|") +
+        '&chco=' + chco.join() +
+        '&chd=t:' + chd.join()
+    );
+}
 
 
 function playlistUpdate() {
