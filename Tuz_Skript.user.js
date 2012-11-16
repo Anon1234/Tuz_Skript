@@ -212,7 +212,7 @@ function showLocalStorage() {
         ls += '' +
         '<td>' + k + '</td>' +
         '<td>' + localStorage[k] + '</td>' +
-        '<td><button class="btn btn-warning btn-mini" type="button" onclick="delete localStorage[\'' + k + '\']; $(this).parent().remove();">Удалить</button></td>';
+        '<td><button class="btn btn-warning btn-mini" type="button" onclick="delete localStorage[\'' + k + '\']; $(this).parents(\'tr\').remove();">Удалить</button></td>';
         ls += '</tr>';
     }
 
