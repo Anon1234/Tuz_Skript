@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.13
+// @version     2.8.14
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -29,53 +29,40 @@ var main = (
     function main() {
 
 
-IS_FF = false;
-if (navigator.userAgent.indexOf("Firefox") != -1) {
-    IS_FF = true;
-}
-
-
-function whenAvailable(name, callback) {
-    var interval = 50; // ms
-    window.setTimeout(
-        function() {
-            if (name) {
-                callback();
-            } else {
-                window.setTimeout(arguments.callee, interval);
-            }
-        },
-    interval);
-}
-
-
-
 $btn_row = $('#anal').parent();
 
 /* Custom Anal Settings Opts */
 aCfg = parseInt(get_cookie('anal'));
 
-var opts_hack = function() {
-   $('#anal').data('popover').options.content = '<hr>' +
-        addOpt('Убрать хедер и футер', 0x100000) +
-        addOpt('Смишнявые надписи', 0x200000) +
-        addOpt('Убрать плеер', 0x400000) +
-        addOpt('Переместить инфу в ряд кнопок', 0x800000) +
-        addOpt('Включить анимешные фоны', 0x1000000) +
-        addOpt('Убрать плейлист', 0x2000000) +
-        addOpt('Убрать только вторую кнопку из плеера', 0x4000000) +
-//        addOpt('Opt 7', 0x8000000) +
-//        addOpt('Opt 8', 0x10000000) +
-//        addOpt('Opt 9', 0x20000000) +
-//        addOpt('Opt 10', 0x40000000) +
-        '<hr>' +
-       $('#anal').data('popover').options.content;
-}
+$('.container').append(
+    '<div id="opts_modal" class="modal hide fade">' +
+        '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+            '<h4>Настройки</h4>' +
+        '</div>' +
+        '<div class="modal-body">' +
+            addOpt('Убрать хедер и футер', 0x100000) +
+            addOpt('Смишнявые надписи', 0x200000) +
+            addOpt('Убрать плеер', 0x400000) +
+            addOpt('Переместить инфу в ряд кнопок', 0x800000) +
+            addOpt('Включить анимешные фоны', 0x1000000) +
+            addOpt('Убрать плейлист', 0x2000000) +
+            addOpt('Убрать только вторую кнопку из плеера', 0x4000000) +
+            /*addOpt('Opt 7', 0x8000000) +
+            addOpt('Opt 8', 0x10000000) +
+            addOpt('Opt 9', 0x20000000) +
+            addOpt('Opt 10', 0x40000000) +*/
+            analCfg() +
+        '</div>' +
+    '</div>'
+);
 
-if (IS_FF)
-    $(opts_hack);
-else
-    whenAvailable($('#anal').data('popover'), opts_hack);
+$('#opts_modal .btn').click(function() {
+    $('#opts_modal').modal('hide');
+});
+$('#anal').off();
+$('#anal').attr('id', 'opts');
+$('#opts').attr({'data-toggle': 'modal', 'data-target': '#opts_modal'});
 
 
 /* json in localstorage */
