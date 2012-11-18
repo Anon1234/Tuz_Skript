@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.14
+// @version     2.8.15
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -682,9 +682,9 @@ function newMessageData(data){
 
         var body = '<div class="somemsg" id="msg' + data['id'] + '" name="'+data['user_id']+'">';
         body += '<div class="msg-actions pull-right">' +
+            '&nbsp;<i class="icon-book" onclick="show_history(\'' + data.user_id + '\')" title="История постов" style="cursor:pointer;"></i>' +
             '&nbsp;<i class="icon-remove" onclick="ignoreUser(\''+data['user_id']+'\','+data['id']+');" title="Игнорировать" style="cursor:pointer;"></i>' +
             '&nbsp;<i class="icon-envelope" onclick="reply_to(event, \'' + data['id'] + '\', \'!#\');" title="Отправить личное сообщение" style="cursor:pointer;"></i>' +
-            '&nbsp;<i class="icon-book" onclick="show_history(\'' + data.user_id + '\')" title="История постов" style="cursor:pointer;"></i>' +
         '</div>';
 
         if(data['ip'] != null) {
