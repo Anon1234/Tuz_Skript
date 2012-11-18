@@ -223,7 +223,7 @@ function showLocalStorage() {
     ls += "<button class='btn btn-danger btn-mini' onclick='localStorage.clear(); $(this).parent().html(\"\"); return false'>Удалить все</button>";
 
     $('#ls_here').html(ls);
-    $('#stats_here').html('<img src="' + get_graph_img() + '">');
+    $('#stats_here').html(get_graph_img());
     $('#tuz_modal').modal();
 }
 
@@ -569,10 +569,12 @@ function get_graph_img() {
     }
 
     return (
+        '<img style="display: block; margin-left: auto; margin-right: auto;" class="img-rounded" src="' +
         'http://chart.apis.google.com/chart?cht=p3&chs=510x300&chtt=Анонимусы говорят&' +
         'chl=' + chl.join("|") +
         '&chco=' + chco.join() +
-        '&chd=t:' + chd.join()
+        '&chd=t:' + chd.join() +
+        '">'
     );
 }
 
