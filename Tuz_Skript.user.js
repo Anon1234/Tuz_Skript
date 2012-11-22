@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.15
+// @version     2.8.16
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -48,8 +48,8 @@ $('.container').append(
             addOpt('Включить анимешные фоны', 0x1000000) +
             addOpt('Убрать плейлист', 0x2000000) +
             addOpt('Убрать только вторую кнопку из плеера', 0x4000000) +
-            /*addOpt('Opt 7', 0x8000000) +
-            addOpt('Opt 8', 0x10000000) +
+            addOpt('Не показывать UID', 0x8000000) +
+            /*addOpt('Opt 8', 0x10000000) +
             addOpt('Opt 9', 0x20000000) +
             addOpt('Opt 10', 0x40000000) +*/
             analCfg() +
@@ -699,9 +699,13 @@ function newMessageData(data){
         if(data['ip'] != null) {
             body += '<span class="msgtime">[' + data['ip'] + ']</span>&nbsp;';
         }
-// -------
-body += '<span onclick="name_prompt(\'' + data.user_id + '\')" class="tuz_hack r4" style="background-color: #' + data.user_id + ';">&nbsp;<span class="' + data.user_id + '">' + uid_to_name(data.user_id) + '</span>&nbsp;</span>&nbsp;'
-// -------
+
+        // ----
+        if (!(aCfg & 0x8000000)) {
+            body += '<span onclick="name_prompt(\'' + data.user_id + '\')" class="tuz_hack r4" style="background-color: #' + data.user_id + ';">&nbsp;<span class="' + data.user_id + '">' + uid_to_name(data.user_id) + '</span>&nbsp;</span>&nbsp;'
+        }
+        // ----
+
         if((aCfg & 16) == 0) {
             body += '<span class="msgtime">' + data['time'] + '</span> ';
         }
