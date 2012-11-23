@@ -49,8 +49,8 @@ $('.container').append(
             addOpt('Убрать плейлист', 0x2000000) +
             addOpt('Убрать только вторую кнопку из плеера', 0x4000000) +
             addOpt('Не показывать UID', 0x8000000) +
-            /*addOpt('Opt 8', 0x10000000) +
-            addOpt('Opt 9', 0x20000000) +
+            addOpt('Отключить автоскроллинг когда не в фокусе', 0x10000000) +
+            /*addOpt('Opt 9', 0x20000000) +
             addOpt('Opt 10', 0x40000000) +*/
             analCfg() +
         '</div>' +
@@ -752,6 +752,14 @@ function newMessageData(data){
             }
         }
   }
+}
+
+function check_position() {
+    var msgsbox = $('#chat');
+    var h = msgsbox.prop("scrollHeight") - msgsbox.scrollTop() - msgsbox.height();
+    if ((h < 50) && !((aCfg & 0x10000000) && leaved))
+        return true;
+    return false;
 }
 
 
