@@ -580,47 +580,59 @@ function get_graph_img() {
 
 
 function playlistUpdate() {
-    $.getJSON('/?app=playlist', function(data) {
-        sec_total = parseInt(data['length_sec']);
-        sec_past = parseInt(data['past']);
-        $pl = $('.playlist table');
-        $pl.html('');
-        $.each(data.songs, function(i, item) {
-            cover_act = item.cover_big ? "openImg('" + item.cover_big + "');return false;" : 'void(0);';
-            cover_href = item.cover_big ? item.cover_big : 'javascript:void(0);';
-            cover = item.cover ? item.cover : '/img/nocover.png';
-            $pl.append(
-// --------
-(i ? '<tr onmouseover="this.children[2].innerHTML=count_time_to(this)" onmouseout="this.children[2].innerHTML=\'' + item.length + '\'">' : '<tr>') +
-// --------
-                '<td class="cover"><a onclick="'+ cover_act +'" href="' + cover_href + '" class="thumbnail"><img src="'+cover+'"></a></td><td class="title">'+item.str+'</td><td class="length">'+item.length+'</td></td>');
-        });
-        var score = (data['score'] < 0 ) ? '<span style="color:red;">' + data['score'] + '</span>' : ( (data['score'] > 0) ?  '<span style="color:green;">+' + data['score'] + '</span>' : ' ' + data['score']);
-        if(data['tags']) {
-            $pl.find('tr:first .title').append('<div class="small sub">'+data['tags']+'</div>');
-        }
-        if(data['canvote'] == true) {
-            $pl.find('tr:first .title').append('<div><i onclick="vote(1);" class="icon-thumbup-active" alt="+" title="+1" style="cursor:pointer"></i><span id="voting">&nbsp;&nbsp;' + score + '&nbsp;<span class="sub">(' + data['votes'] + ')</span>&nbsp;&nbsp;</span><i onclick="vote(2);" class="icon-thumbdown-active" alt="-" title="-1" style="cursor:pointer"></i></div>');
-        }
-        else {
-            $pl.find('tr:first .title').append('<div><i class="icon-thumbup" alt="+" title="+1"></i><span id="voting">&nbsp;&nbsp;' + score + '&nbsp;<span class="sub">(' + data['votes'] + ')</span>&nbsp;&nbsp;</span><i class="icon-thumbdown" alt="-" title="-1"></i></div>');
-        }
-        $pl.find('tr:first .title').append('<div><progress id="prog" max="100" value="'+dt+'"></progress></div>');
-        $pl.find('tr:first .length').append('<div><img src="/img/icon_eq.gif" title="Играет сейчас" alt=""></div><div><a href="'+data['url']+'" title="Скачать"><i class="icon-download-alt"></i></a></div>');
-        $('#lsnrs').html(data['lsnrs']);
-// --------
-if (aCfg & 0x200000) {
-    data.fill = data.fill.replace('Плейлист заполнен', 'Плейлист засран');
-}
-// --------
-        $('#fill').html(data['fill']);
-// --------
-var p_votes = (parseInt(data.votes) + parseInt(data.score)) / 2;
-var n_votes = parseInt(data.votes) - p_votes;
-$("#voting .sub").attr("title", "За: " + p_votes + "  Против: " + n_votes).tooltip({placement: "bottom"});
-// --------
+    $.getJSON('/?app=playlist',
+        function(data) {
+            sec_total = parseInt(data['length_sec']);
+            sec_past = parseInt(data['past']);
+            $pl = $('.playlist table');
+            $pl.html('');
+            $.each(data.songs,
+                function(i, item) {
+                    cover_act = item.cover_big ? "openImg('" + item.cover_big + "');return false;" : 'void(0);';
+                    cover_href = item.cover_big ? item.cover_big : 'javascript:void(0);';
+                    cover = item.cover ? item.cover : '/img/nocover.png';
+                    $pl.append(
+                        (i ? '<tr class="track" data-track-id="' + item.id + '" data-track-length="' + item.length + '">' : '<tr>') +
+                        '<td class="cover"><a onclick="'+ cover_act +'" href="' + cover_href + '" class="thumbnail"><img src="'+cover+'"></a></td><td class="title">'+item.str+'</td><td class="length">'+item.length+'</td></td>'
+                    );
+                }
+            );
+            var score = (data['score'] < 0 ) ? '<span style="color:red;">' + data['score'] + '</span>' : ( (data['score'] > 0) ?  '<span style="color:green;">+' + data['score'] + '</span>' : ' ' + data['score']);
+            if (data['tags']) {
+                $pl.find('tr:first .title').append('<div class="small sub">'+data['tags']+'</div>');
+            }
+            if (data['canvote'] == true) {
+                $pl.find('tr:first .title').append('<div><i onclick="vote(1);" class="icon-thumbup-active" alt="+" title="+1" style="cursor:pointer"></i><span id="voting">&nbsp;&nbsp;' + score + '&nbsp;<span class="sub">(' + data['votes'] + ')</span>&nbsp;&nbsp;</span><i onclick="vote(2);" class="icon-thumbdown-active" alt="-" title="-1" style="cursor:pointer"></i></div>');
+            }
+            else {
+                $pl.find('tr:first .title').append('<div><i class="icon-thumbup" alt="+" title="+1"></i><span id="voting">&nbsp;&nbsp;' + score + '&nbsp;<span class="sub">(' + data['votes'] + ')</span>&nbsp;&nbsp;</span><i class="icon-thumbdown" alt="-" title="-1"></i></div>');
+            }
+            $pl.find('tr:first .title').append('<div><progress id="prog" max="100" value="'+dt+'"></progress></div>');
+            $pl.find('tr:first .length').append('<div><img src="/img/icon_eq.gif" title="Играет сейчас" alt=""></div><div><a href="'+data['url']+'" title="Скачать"><i class="icon-download-alt"></i></a></div>');
+            $('#lsnrs').html(data['lsnrs']);
 
-    });
+            if (aCfg & 0x200000) {
+                data.fill = data.fill.replace('Плейлист заполнен', 'Плейлист засран');
+            }
+
+            $('#fill').html(data['fill']);
+
+            var p_votes = (parseInt(data.votes) + parseInt(data.score)) / 2;
+            var n_votes = parseInt(data.votes) - p_votes;
+            $("#voting .sub").attr("title", "За: " + p_votes + "  Против: " + n_votes).tooltip({placement: "bottom"});
+
+            $('.track').hover(
+                function() {
+                    $(this).find('.length').html(count_time_to(this));
+                },
+                function() {
+                    $(this).find('.length').html($(this).attr('data-track-length'));
+
+                }
+            );
+
+        }
+    );
 }
 
 
