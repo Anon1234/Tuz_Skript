@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.18
+// @version     2.8.19
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -441,7 +441,7 @@ function change_op() {
     ls_set('opacity', OPACITY);
 }
 $(".container").css("opacity", OPACITY / 100);
-$btn_row.find(".btn:eq(3)").after('<button class="btn btn-mini" onclick="change_op()"><i class="icon-font"></i></button>');
+$btn_row.find(".btn:eq(3)").after('<button class="btn btn-mini" onclick="change_op()"><i class="icon-tint"></i></button>');
 
 
 /* anime backgrounds */
