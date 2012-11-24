@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.17
+// @version     2.8.18
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -400,6 +400,24 @@ function switch_style() {
     style == 'default' ? set_stylesheet('neutron') : set_stylesheet('default');
 }
 
+function fix_styles() {
+    try {
+        var n = document.styleSheets[2];
+        n.insertRule(".alert-on td { background-color: #3a3f44 !important; }", n.cssRules.length);
+        n.insertRule(".track:hover td { background-color: #3a3f44 !important; }", n.cssRules.length);
+
+        var d = document.styleSheets[1];
+        d.insertRule(".alert-on td { background-color: #e7ffaa !important; }", d.cssRules.length);
+        d.insertRule(".track:hover td { background-color: #e7ffaa !important; }", d.cssRules.length);
+    }
+    catch(e) {
+        return;
+    }
+    clearInterval(SF_INTERVAL);
+}
+
+SF_INTERVAL = setInterval(fix_styles, 500)
+
 
 /* кнопки истории, реформала... */
 $($btn_row).append(
@@ -630,6 +648,28 @@ function playlistUpdate() {
                 }
             );
 
+            $('.track').click(
+                function() {
+                    var $this = $(this);
+                    if (!$this.hasClass('alert-on')) {
+                        ls_set('alert_on', $this.attr('data-track-id'));
+                        if ($('.alert-on').length) {
+                            $('.alert-on').removeClass('alert-on');
+                            clearInterval(TTT_INTERVAL)
+                        }
+                        $this.addClass('alert-on');
+                        TTT_INTERVAL = setInterval(check_time_to_track, 5000);
+                    }
+                    else {
+                        $this.removeClass('alert-on');
+                        delete localStorage['alert_on'];
+                        clearInterval(TTT_INTERVAL)
+                    }
+                }
+            );
+
+            $('.track[data-track-id=' + ls_get('alert_on') + ']').addClass('alert-on');
+
         }
     );
 }
@@ -760,6 +800,32 @@ function check_position() {
         return true;
     return false;
 }
+
+function check_time_to_track() {
+    var $track = $('.alert-on');
+    if ($track.length) {
+        var ttt = tts(count_time_to($track).substr(1));
+            if (ttt <= 10) {
+                newSysMessageData($track.find('.title').text() + ' скоро заиграет!');
+                $('#audio_alert')[0].play();
+                clearInterval(TTT_INTERVAL);
+            }
+            /*else {
+                newSysMessageData(ttt +' секунд до ' + $track.find('.title').text());
+            }*/
+    }
+    else {
+        clearInterval(TTT_INTERVAL);
+    }
+}
+
+TTT_INTERVAL = setInterval(check_time_to_track, 5000);
+
+$('body').append(
+    '<audio id="audio_alert" preload="auto">' +
+        '<source src="https://github.com/Anon1234/Tuz_Skript/raw/master/kurly.ogg">' +
+    '</audio>'
+);
 
 
 $("#chat").html("");
