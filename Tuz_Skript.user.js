@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.19
+// @version     2.8.20
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -826,6 +826,7 @@ $('body').append(
         '<source src="https://github.com/Anon1234/Tuz_Skript/raw/master/kurly.ogg">' +
     '</audio>'
 );
+$('#audio_alert')[0].volume = 0.4;
 
 
 $("#chat").html("");
