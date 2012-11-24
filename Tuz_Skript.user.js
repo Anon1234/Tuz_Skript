@@ -412,6 +412,19 @@ $($btn_row).append(
     '</div>'
 );
 
+/* opacity */
+var OPACITY = ls_get('opacity') || 100;
+function change_op() {
+    var step = 10;
+    OPACITY -= step;
+    if (OPACITY - step < 0)
+        OPACITY = 100;
+    $(".container").css("opacity", OPACITY / 100);
+    ls_set('opacity', OPACITY);
+}
+$(".container").css("opacity", OPACITY / 100);
+$btn_row.find(".btn:eq(3)").after('<button class="btn btn-mini" onclick="change_op()"><i class="icon-font"></i></button>');
+
 
 /* anime backgrounds */
 var delete_cookie = function(name) {
@@ -429,24 +442,10 @@ function switch_anime_bg() {
     set_anime_bg();
 }
 
-var OPACITY = ls_get('opacity') || 100;
-function change_op() {
-    var step = 10;
-    OPACITY -= step;
-    if (OPACITY - step < 0)
-        OPACITY = 100;
-    $(".container").css("opacity", OPACITY / 100);
-    ls_set('opacity', OPACITY);
-}
-
 if (aCfg & 0x1000000) {
     $("body").css("background-size", "cover");
-    $(".container").css("opacity", OPACITY / 100);
     set_anime_bg();
-    $btn_row.find(".btn:eq(3)").after(
-        '<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>' +
-        '<button class="btn btn-mini" onclick="change_op()"><i class="icon-font"></i></button>'
-    );
+    $btn_row.find(".btn:eq(4)").after('<button class="btn btn-mini" onclick="switch_anime_bg()"><i class="icon-refresh"></i></button>');
 }
 /**********************/
 
