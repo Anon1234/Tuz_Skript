@@ -826,7 +826,7 @@ $('body').append(
         '<source src="https://github.com/Anon1234/Tuz_Skript/raw/master/kurly.ogg">' +
     '</audio>'
 );
-$('#audio_alert')[0].volume = 0.4;
+$('#audio_alert')[0].volume = 0.81;
 
 
 $("#chat").html("");
