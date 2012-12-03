@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.8.21
+// @version     2.8.22
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -118,6 +118,7 @@ function count_time_to(track){
     $(track).prevAll().each(
         function(i, e) {
             total += tts($(e).find(".length").text());
+            total -= 2; // Поправка на кроссфейд
         }
     );
     var time = total + Math.ceil((sec_total - sec_past) - sec_total);
