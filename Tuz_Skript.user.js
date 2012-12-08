@@ -807,9 +807,9 @@ function check_time_to_track() {
     if ($track.length) {
         var ttt = tts(count_time_to($track).substr(1));
             if (ttt <= 10) {
+                clearInterval(TTT_INTERVAL);
                 newSysMessageData($track.find('.title').text() + ' скоро заиграет!');
                 $('#audio_alert')[0].play();
-                clearInterval(TTT_INTERVAL);
             }
             /*else {
                 newSysMessageData(ttt +' секунд до ' + $track.find('.title').text());
