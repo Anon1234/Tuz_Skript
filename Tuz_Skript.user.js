@@ -528,6 +528,7 @@ if (aCfg & 0x2000000) {
 /* убрать только вторую кнопку из плеера */
 if ((aCfg & 0x4000000) && !(aCfg & 0x400000)) {
     $("#lsn-btn").parent().find('a.btn').remove();
+    $("#lsn-btn").css("width", $(".span4").width());
 }
 
 
