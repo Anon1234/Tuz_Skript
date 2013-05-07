@@ -375,6 +375,12 @@ if (aCfg & 0x400000) {
     //auto_resize()
 }
 
+// ---------- Убрать только вторую кнопку из плеера ----------
+if ((aCfg & 0x4000000) && !(aCfg & 0x400000)) {
+    $("#lsn-btn").parent().find('a.btn').remove();
+    $("#lsn-btn").css("width", $(".span4").width());
+ }
+
 // ---------- Удаление хедера и футера ----------
 if (aCfg & 0x100000) {
     $('.navbar').remove();
@@ -493,14 +499,14 @@ function check_time_to_track() {
     }
 }
 
-TTT_INTERVAL = setInterval(check_time_to_track, 5000);
+TTT_INTERVAL = setInterval(check_time_to_track, 2000);
 
 $('body').append(
     '<audio id="audio_alert" preload="auto">' +
         '<source src="https://github.com/Anon1234/Tuz_Skript/raw/master/kurly.ogg">' +
     '</audio>'
 );
-$('#audio_alert')[0].volume = 0.81;
+$('#audio_alert')[0].volume = 0.8;
 
 
 //-----------------------------------------------------------------------------
@@ -578,12 +584,13 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
                 var uid = $post.attr("name");
                 $post.find('.msg-actions').prepend('&nbsp;<i class="icon-book" onclick="show_history(\'' + uid + '\')" title="История постов"></i>');
                 $post.find('.somemsg_id').after('&nbsp;<span onclick="name_prompt(\'' + uid + '\')" class="tuz_hack r4" style="background-color: #' + uid + ';">&nbsp;<span class="' + uid + '">' + uid_to_name(uid) + '</span>&nbsp;</span>&nbsp;');
-                // ...
+
+                if (leaved) {
+                    NEW_POSTS += 1;
+                };
+
             }).attr("data-tuz", "tuz");
 
-            if (leaved) {
-                NEW_POSTS += res.count;
-            };
         };
 
         // ---------- Замена надписей ----------
@@ -631,7 +638,10 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
                         function() {
                             $(this).find('.length').html($(this).attr('data-track-length'));
                     })
-                    .click(function() {
+                    .click(function(event) {
+
+                        if (event.target == this.getElementsByTagName("img")[0]) { return; };
+
                         var $this = $(this);
                         if (!$this.hasClass('alert-on')) {
                             ls_set('alert_on', $this.attr('data-track-id'));
@@ -640,7 +650,7 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
                                 clearInterval(TTT_INTERVAL)
                             }
                             $this.addClass('alert-on');
-                            TTT_INTERVAL = setInterval(check_time_to_track, 5000);
+                            TTT_INTERVAL = setInterval(check_time_to_track, 2000);
                         }
                         else {
                             $this.removeClass('alert-on');
