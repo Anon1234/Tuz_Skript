@@ -52,6 +52,7 @@ function ls_get(key){
 
 $btn_row= $('#anal').parent();
 
+IGNORED_MSGS = [];
 
 //-----------------------------------------------------------------------------
 //                Функции подсчета времени до трека
@@ -185,8 +186,8 @@ $('.container').append(
             addOpt('Убрать только вторую кнопку из плеера', 0x4000000) +
             addOpt('Не показывать UID', 0x8000000) +
             addOpt('Отключить автоскроллинг когда не в фокусе', 0x10000000) +
-            /*addOpt('Opt 9', 0x20000000) +
-            addOpt('Opt 10', 0x40000000) +*/
+            addOpt('Не показывать ответы на заигнореные посты', 0x20000000) +
+            //addOpt('Opt 10', 0x40000000) +
             analCfg() +
         '</div>' +
     '</div>'
@@ -579,14 +580,33 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
     if (settings.url.indexOf("/?app=chat") !== -1) {
         var res = $.parseJSON(xhr.responseText);
         if (res.count) {
+
+            // ---------- Пополнение списка номеров заигнореных постов ----------
+            $.each(res.data, function(i, e) {
+                if (e.type === "msg" && (ignoreArray.indexOf(e.user_id) > -1)) {
+                    IGNORED_MSGS.push(e.id);
+                };
+            });
+
+            // ---------- Обработка постов ----------
             $(".somemsg:not([data-tuz])").each(function() {
-                $post = $(this);
+                var $post = $(this);
                 var uid = $post.attr("name");
                 $post.find('.msg-actions').prepend('&nbsp;<i class="icon-book" onclick="show_history(\'' + uid + '\')" title="История постов"></i>');
                 $post.find('.somemsg_id').after('&nbsp;<span onclick="name_prompt(\'' + uid + '\')" class="tuz_hack r4" style="background-color: #' + uid + ';">&nbsp;<span class="' + uid + '">' + uid_to_name(uid) + '</span>&nbsp;</span>&nbsp;');
 
                 if (leaved) {
                     NEW_POSTS += 1;
+                };
+
+                // ---------- Удалить пост, если это ответ заигнореному ----------
+                if (aCfg & 0x20000000) {
+                    $post.find('.qt').each(function() {
+                        var post_id = $(this).attr('href').slice(4);
+                        if (IGNORED_MSGS.indexOf(post_id) > -1) {
+                            $post.remove();
+                        };
+                    });
                 };
 
             }).attr("data-tuz", "tuz");
