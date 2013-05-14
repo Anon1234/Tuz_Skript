@@ -413,20 +413,27 @@ function switch_style() {
 
 function fix_styles() {
     try {
-        var n = document.styleSheets[2];
-        n.insertRule(".alert-on td { background-color: #3a3f44 !important; }", n.cssRules.length);
-        n.insertRule(".track:hover td { background-color: #3a3f44 !important; }", n.cssRules.length);
-
-        var d = document.styleSheets[1];
-        d.insertRule(".alert-on td { background-color: #e7ffaa !important; }", d.cssRules.length);
-        d.insertRule(".track:hover td { background-color: #e7ffaa !important; }", d.cssRules.length);
+        for (var i = 0; i < document.styleSheets.length; i++) {
+            if (document.styleSheets[i].href.indexOf("dark.css") > -1) {
+                var dark = document.styleSheets[i];
+                dark.insertRule(".alert-on td, .track:hover td { background-color: #3a3f44 !important; }", dark.cssRules.length);
+                var dark_fixed = true;
+            }
+            else if (document.styleSheets[i].href.indexOf("custom.css") > -1) {
+                var light = document.styleSheets[i];
+                light.insertRule(".alert-on td, .track:hover td { background-color: #e7ffaa !important; }", light.cssRules.length);
+                var light_fixed = true;
+            };
+        };
     }
     catch (e) {
-        setTimeout(fix_styles, 500);
+        if (!(dark_fixed && light_fixed)) {
+            setTimeout(fix_styles, 500);
+        }
     }
 }
 
-setTimeout(fix_styles, 500);
+fix_styles();
 
 
 // ---------- Добавление кнопок справа (история треков, реформал...) ----------
