@@ -21,7 +21,8 @@ css_style.innerHTML = '' +
     '.semi_transparent{background:rgba(255,255,255,0.882);padding:18px}' +
     '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
     '.length{word-wrap: normal !important; width: 40px}' +
-    '#mess {z-index: 9999;}'
+    '#mess {z-index: 9999;}' +
+    '.new_post {color: orange;}'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -570,6 +571,11 @@ function new_msg_stop(){
     favicon_off_on();
     document.title = default_title;
     NEW_POSTS = 0;
+    setTimeout(function() {
+        if (!leaved) {
+            $('.new_post').removeClass('new_post');
+        }
+    }, 2000)
 }
 
 
@@ -610,6 +616,7 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
 
                 if (leaved) {
                     NEW_POSTS += 1;
+                    $post.find('.somemsg_id').addClass('new_post');
                 };
 
                 // ---------- Удалить пост, если это ответ заигнореному ----------
