@@ -4,9 +4,10 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.9.0
+// @version     2.9.1
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
+// @require     https://raw.github.com/flesler/jquery.scrollTo/master/jquery.scrollTo.min.js
 // ==/UserScript==
 
 
@@ -571,11 +572,15 @@ function new_msg_stop(){
     favicon_off_on();
     document.title = default_title;
     NEW_POSTS = 0;
+    var can_scroll = check_position();
+    if (can_scroll) {
+        $('#chat').scrollTo(".new_post:eq(0)", 1000);
+    };
     setTimeout(function() {
         if (!leaved) {
             $('.new_post').removeClass('new_post');
         }
-    }, 2000)
+    }, 5000)
 }
 
 
