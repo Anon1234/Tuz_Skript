@@ -376,6 +376,12 @@ if (aCfg & 0x400000) {
     //auto_resize()
 }
 
+// ---------- Убрать плейлист ----------
+if (aCfg & 0x2000000) {
+    $('.span4').remove();
+    $('.span8').removeClass('span8').addClass('span12');
+}
+
 // ---------- Убрать только вторую кнопку из плеера ----------
 if ((aCfg & 0x4000000) && !(aCfg & 0x400000)) {
     $("#lsn-btn").parent().find('a.btn').remove();
