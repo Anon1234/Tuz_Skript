@@ -431,6 +431,7 @@ function fix_styles() {
             else if (document.styleSheets[i].href.indexOf("custom.css") > -1) {
                 var light = document.styleSheets[i];
                 light.insertRule(".alert-on td, .track:hover td { background-color: #e7ffaa !important; }", light.cssRules.length);
+                light.insertRule(".somemsg { border-bottom: none !important; }", light.cssRules.length);
                 var light_fixed = true;
             };
         };
