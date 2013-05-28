@@ -575,13 +575,13 @@ function new_msg_stop(){
     NEW_POSTS = 0;
     var can_scroll = check_position();
     if (can_scroll) {
-        $('#chat').scrollTo(".new_post:eq(0)", 1000);
+        $('#chat').scrollTo($(".new_post:eq(0)").parent(), 1000);
     };
     setTimeout(function() {
         if (!leaved) {
             $('.new_post').removeClass('new_post');
         }
-    }, 5000)
+    }, 4000)
 }
 
 
