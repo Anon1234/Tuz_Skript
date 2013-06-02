@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.9.2
+// @version     2.9.3
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -710,6 +710,15 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
         });
 
         $('.track[data-track-id=' + ls_get('alert_on') + ']').addClass('alert-on');
+
+        // ---------- Показ текущего трека при скрытом плейлисте ----------
+        if (aCfg & 0x2000000) {
+            if (!$("#now_playing").length) {
+                $btn_row.find(".pull-right").before('<a id="now_playing" class="btn btn-mini disabled"></a>');
+            };
+            $("#now_playing").text(res.songs[0].str);
+        };
+
     }
 });
 
