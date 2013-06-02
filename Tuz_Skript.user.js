@@ -618,9 +618,10 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
             $(".somemsg:not([data-tuz])").each(function() {
                 var $post = $(this);
                 var uid = $post.attr("name");
-                $post.find('.msg-actions').prepend('&nbsp;<i class="icon-book" onclick="show_history(\'' + uid + '\')" title="История постов"></i>');
-                $post.find('.somemsg_id').after('&nbsp;<span onclick="name_prompt(\'' + uid + '\')" class="tuz_hack r4" style="background-color: #' + uid + ';">&nbsp;<span class="' + uid + '">' + uid_to_name(uid) + '</span>&nbsp;</span>&nbsp;');
-
+                if (!(aCfg & 0x8000000)) {
+                    $post.find('.msg-actions').prepend('&nbsp;<i class="icon-book" onclick="show_history(\'' + uid + '\')" title="История постов"></i>');
+                    $post.find('.somemsg_id').after('&nbsp;<span onclick="name_prompt(\'' + uid + '\')" class="tuz_hack r4" style="background-color: #' + uid + ';">&nbsp;<span class="' + uid + '">' + uid_to_name(uid) + '</span>&nbsp;</span>&nbsp;');
+                };
                 if (leaved) {
                     NEW_POSTS += 1;
                     $post.find('.somemsg_id').addClass('new_post');
