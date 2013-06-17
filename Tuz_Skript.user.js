@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.9.3
+// @version     2.9.4
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -503,14 +503,14 @@ function check_time_to_track() {
     var $track = $('.alert-on');
     if ($track.length) {
         var ttt = tts(count_time_to($track).substr(1));
-            if (ttt <= 10) {
-                clearInterval(TTT_INTERVAL);
-                newSysMessageData($track.find('.title').text() + ' скоро заиграет!');
-                $('#audio_alert')[0].play();
-            }
-            /*else {
-                newSysMessageData(ttt +' секунд до ' + $track.find('.title').text());
-            }*/
+        if (ttt <= 10) {
+            clearInterval(TTT_INTERVAL);
+            $('#audio_alert')[0].play();
+            new Notification("Скоро заиграет!", {
+                "icon": $track.find('img').attr("src"),
+                "body": $track.find('.title').text()
+            });
+        }
     }
     else {
         clearInterval(TTT_INTERVAL);
@@ -525,6 +525,17 @@ $('body').append(
     '</audio>'
 );
 $('#audio_alert')[0].volume = 0.8;
+
+// ---------- Использование нативных уведомлений ----------
+if (Notification && Notification.permission !== "granted") {
+    Notification.requestPermission(function(p) {
+        if (p === "granted") {
+            new Notification("Спасибо, браток.", {
+                "icon": "https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png"
+            });
+        };
+    });
+};
 
 
 //-----------------------------------------------------------------------------
