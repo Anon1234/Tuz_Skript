@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.9.4
+// @version     2.9.5
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -173,7 +173,7 @@ $('#history_modal').on('hide', function() {
 
 aCfg = parseInt(get_cookie('anal'));
 
-$('.container').append(
+$('body').append(
     '<div id="opts_modal" class="modal hide fade">' +
         '<div class="modal-header">' +
             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
@@ -208,7 +208,7 @@ $('#opts').attr({'data-toggle': 'modal', 'data-target': '#opts_modal'});
 //-----------------------------------------------------------------------------
 //                        Туз_Скрипт Меню
 
-$('.container').append(
+$('body').append(
     '<div id="tuz_modal" class="modal hide fade">' +
         '<div class="modal-header">' +
             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
