@@ -506,10 +506,12 @@ function check_time_to_track() {
         if (ttt <= 10) {
             clearInterval(TTT_INTERVAL);
             $('#audio_alert')[0].play();
-            new Notification("Скоро заиграет!", {
-                "icon": $track.find('img').attr("src"),
-                "body": $track.find('.title').text()
-            });
+            if (typeof Notification !== 'undefined') {
+                new Notification("Скоро заиграет!", {
+                    "icon": $track.find('img').attr("src"),
+                    "body": $track.find('.title').text()
+                });
+            }
         }
     }
     else {
@@ -527,7 +529,7 @@ $('body').append(
 $('#audio_alert')[0].volume = 0.8;
 
 // ---------- Использование нативных уведомлений ----------
-if (Notification && Notification.permission !== "granted") {
+if (typeof Notification !== 'undefined' && Notification.permission !== "granted") {
     Notification.requestPermission(function(p) {
         if (p === "granted") {
             new Notification("Спасибо, браток.", {
