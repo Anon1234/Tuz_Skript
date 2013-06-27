@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.9.5
+// @version     2.9.6
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -609,6 +609,39 @@ $("#btns button").each(
         ).remove();
     }
 );
+
+
+//-----------------------------------------------------------------------------
+//                        Замер скорости аплоада трека
+(function set_file_handler() {
+    var $added = $("[name=added]");
+    if (!$added.length) {
+        setTimeout(set_file_handler, 500);
+    }
+    else {
+        $added.on('change', function(event) {
+            var f = event.target.files[0];
+            var start = (new Date).getTime();
+            $('#upload_song+iframe')[0].contentWindow.document.body.innerHTML = "";
+            (function check_progress() {
+                var iframe = $('#upload_song+iframe')[0].contentWindow.document.body;
+                var res = $.parseJSON(iframe.innerHTML);
+                if (res) {
+                    var load_time = Math.ceil(((new Date).getTime() - start) / 1000);
+                    var speed = (f.size / 1024 / 1024 / load_time).toFixed(2);
+                    var human_speed = ((speed < 1) ? speed * 1024 + " KiB/s" : speed + " MiB/s");
+                    var info = " (Время загрузки: " + stt(load_time) + ", скорость: " + human_speed + ")";
+                    $(".alert:last").text($(".alert:last").text() + info);
+                    set_file_handler();
+                }
+                else {
+                    setTimeout(check_progress, 500);
+                }
+            })();
+        });
+    }
+})();
+
 
 
 $(document).ajaxSuccess(function(event, xhr, settings) {
