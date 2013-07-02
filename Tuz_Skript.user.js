@@ -4,15 +4,15 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     2.9.7
+// @version     2.9.8
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
 
 
 // ---------- Общие стили ----------
-var css_style = document.createElement('style')
-css_style.type = "text/css"
+var css_style = document.createElement('style');
+css_style.type = "text/css";
 css_style.innerHTML = '' +
     '.r4{border-radius:8px}' +
     '.tuz_hack{font-family:Courier New;font-size:11px;color:white;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41Ljg3O4BdAAAAQklEQVQYVxXEoQ5AAAAFwDebTRAURVEkRZIURVEUQbDZ/P9HcOEuSYpfSlWq1ahVp16DRk2atWjVpl2HTl269ej9AJF0BE7FA3MyAAAAAElFTkSuQmCC)}' +
@@ -22,7 +22,9 @@ css_style.innerHTML = '' +
     '.dot{text-decoration:none!important;border-bottom:1px dotted}' +
     '.length{word-wrap: normal !important; width: 40px}' +
     '#mess {z-index: 9999;}' +
-    '.new_post {color: orange;}'
+    '.new_post {color: orange;}' +
+    '.img-full { float: left; max-width: none; position: fixed; \
+        z-index: 9999; background-color: #ccc; border: 1px solid black; }'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -30,6 +32,14 @@ document.getElementsByTagName('head')[0].appendChild(css_style);
 var script = document.createElement('script');
 script.type = "text/javascript";
 var main = (function main() {
+
+
+//-----------------------------------------------------------------------------
+//                        Плагины
+
+// scrollTo
+(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
+
 
 //-----------------------------------------------------------------------------
 //                        Утилиты
@@ -57,7 +67,6 @@ $btn_row= $('#anal').parent();
 
 IGNORED_MSGS = [];
 
-(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
 
 //-----------------------------------------------------------------------------
 //                Функции подсчета времени до трека
@@ -653,8 +662,93 @@ $("#btns button").each(
 })();
 
 
+//-----------------------------------------------------------------------------
+//              Просмотр изображений как в куклоскрипте
+
+function $event(el, events) {
+    for(var key in events) {
+        el.addEventListener(key, events[key], false);
+    }
+    return el;
+}
+
+function $revent(el, events) {
+    for(var key in events) {
+        el.removeEventListener(key, events[key], false);
+    }
+}
+
+function expandimg(postnum, imgurl, thumburl, imgw, imgh, thumbw, thumbh) {
+
+    var firefox = (/Firefox/i.test(navigator.userAgent));
+        wHeight = window.innerHeight,
+        wWidth = document.documentElement.clientWidth;
+
+    var elMove, elStop, newW, newH, srcH, scrW = wWidth;
+
+    newW = imgw < scrW ? imgw : scrW;
+    newH = newW * imgh / imgw;
+    if(newH > (scrH = wHeight)) {
+        newH = scrH;
+        newW = newH * imgw / imgh;
+    }
+
+    var $thumb = $('#msg' + postnum +' div.pct img');
+    $thumb.after('<img class="img-full" src="' + imgurl + '" alt="' +
+            imgurl + '" width="' + newW + '" height="' + newH + '">');
+    full = $('.img-full')[0];
+    full.style.cssText = 'left: ' + (scrW - newW) / 2 + 'px; top: ' + (scrH - newH) / 2 + 'px;';
+
+    full.addEventListener(firefox ? 'DOMMouseScroll' : 'mousewheel', function(e) {
+        var curX = e.clientX,
+            curY = e.clientY,
+            oldL = parseInt(this.style.left, 10),
+            oldT = parseInt(this.style.top, 10),
+            oldW = parseFloat(this.style.width || this.width),
+            oldH = parseFloat(this.style.height || this.height),
+            d = firefox ? -e.detail : e.wheelDelta,
+            newW = oldW * (d > 0 ? 1.25 : 0.8),
+            newH = oldH * (d > 0 ? 1.25 : 0.8);
+        e.preventDefault();
+        this.style.width = newW + 'px';
+        this.style.height = newH + 'px';
+        this.style.left = parseInt(curX - (newW/oldW) * (curX - oldL), 10) + 'px';
+        this.style.top = parseInt(curY - (newH/oldH) * (curY - oldT), 10) + 'px';
+    }, false);
+
+    elMove = function(e) {
+        full.style.left = e.clientX - full.curX + 'px';
+        full.style.top = e.clientY - full.curY + 'px';
+        full.moved = true;
+    };
+
+    elStop = function() {
+        $revent(document.body, {'mousemove': elMove, 'mouseup': elStop});
+    };
+
+    full.onmousedown = function(e) {
+        e.preventDefault();
+        full.curX = e.clientX - parseInt(full.style.left, 10);
+        full.curY = e.clientY - parseInt(full.style.top, 10);
+        $event(document.body, {'mousemove': elMove, 'mouseup': elStop});
+    };
+
+    full.addEventListener('click', function(e) {
+        if (this.moved) {
+            this.moved = false;
+        }
+        else {
+            $(this).remove();
+        }
+    }, true);
+}
+
+
+//-----------------------------------------------------------------------------
+//                        Обработка ajax
 
 $(document).ajaxSuccess(function(event, xhr, settings) {
+
 
 //-----------------------------------------------------------------------------
 //                        Обработка чата
