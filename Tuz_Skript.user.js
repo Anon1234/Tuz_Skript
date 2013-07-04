@@ -783,6 +783,7 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
                         var post_id = $(this).attr('href').slice(4);
                         if (IGNORED_MSGS.indexOf(post_id) > -1) {
                             $post.remove();
+                            if (leaved) { NEW_POSTS -= 1; };
                         };
                     });
                 };
