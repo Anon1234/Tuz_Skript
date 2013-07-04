@@ -23,7 +23,7 @@ css_style.innerHTML = '' +
     '.length{word-wrap: normal !important; width: 40px}' +
     '#mess {z-index: 9999;}' +
     '.new_post {color: orange;}' +
-    '.img-full { float: left; max-width: none; position: fixed; \
+    '.img-full { float: left; margin: 2px 10px; max-width: none; position: fixed; \
         z-index: 9999; background-color: #ccc; border: 1px solid black; }'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
@@ -682,14 +682,15 @@ function expandimg(postnum, imgurl, thumburl, imgw, imgh, thumbw, thumbh) {
 
     var firefox = (/Firefox/i.test(navigator.userAgent));
         wHeight = window.innerHeight,
-        wWidth = document.documentElement.clientWidth;
+        wWidth = document.documentElement.clientWidth,
+        tmpH = tmpW = 0;
 
     var elMove, elStop, newW, newH, srcH, scrW = wWidth;
 
-    newW = imgw < scrW ? imgw : scrW;
+    newW = imgw < scrW ? imgw : scrW - (tmpW = 22); // 2*10px margin + 2*1px border
     newH = newW * imgh / imgw;
     if(newH > (scrH = wHeight)) {
-        newH = scrH;
+        newH = scrH - (tmpH = 6); // 2*2px margin + 2*1px border
         newW = newH * imgw / imgh;
     }
 
@@ -697,7 +698,7 @@ function expandimg(postnum, imgurl, thumburl, imgw, imgh, thumbw, thumbh) {
     $thumb.after('<img class="img-full" src="' + imgurl + '" alt="' +
             imgurl + '" width="' + newW + '" height="' + newH + '">');
     full = $('.img-full')[0];
-    full.style.cssText = 'left: ' + (scrW - newW) / 2 + 'px; top: ' + (scrH - newH) / 2 + 'px;';
+    full.style.cssText = 'left: ' + (scrW - newW - tmpW) / 2 + 'px; top: ' + (scrH - newH - tmpH) / 2 + 'px;';
 
     full.addEventListener(firefox ? 'DOMMouseScroll' : 'mousewheel', function(e) {
         var curX = e.clientX,
