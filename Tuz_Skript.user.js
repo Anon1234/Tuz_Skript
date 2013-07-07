@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     13.7.4.0
+// @version     13.7.7.0
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -24,7 +24,7 @@ css_style.innerHTML = '' +
     '#mess {z-index: 9999;}' +
     '.new_post {color: orange;}' +
     '.img-full { float: left; margin: 2px 10px; max-width: none; position: fixed; \
-        z-index: 9999; background-color: #ccc; border: 1px solid black; }'
+        z-index: 9999; background-color: white; border: 1px solid black; }'
 document.getElementsByTagName('head')[0].appendChild(css_style);
 
 
@@ -680,25 +680,24 @@ function $revent(el, events) {
 
 function expandimg(postnum, imgurl, thumburl, imgw, imgh, thumbw, thumbh) {
 
-    var firefox = (/Firefox/i.test(navigator.userAgent));
-        wHeight = window.innerHeight,
-        wWidth = document.documentElement.clientWidth,
-        tmpH = tmpW = 0;
+    var elMove, elStop, newW, newH,
+        scrH = window.innerHeight,
+        scrW = document.documentElement.clientWidth,
+        firefox = (/Firefox/i.test(navigator.userAgent));
 
-    var elMove, elStop, newW, newH, srcH, scrW = wWidth;
-
-    newW = imgw < scrW ? imgw : scrW - (tmpW = 22); // 2*10px margin + 2*1px border
+    newW = imgw < scrW ? imgw : scrW - 22; // 2*10px margin + 2*1px border
     newH = newW * imgh / imgw;
-    if(newH > (scrH = wHeight)) {
-        newH = scrH - (tmpH = 6); // 2*2px margin + 2*1px border
+    if (newH > scrH) {
+        newH = scrH - 6; // 2*2px margin + 2*1px border
         newW = newH * imgw / imgh;
     }
 
+    $('.img-full').remove();
+
     var $thumb = $('#msg' + postnum +' div.pct img');
-    $thumb.after('<img class="img-full" src="' + imgurl + '" alt="' +
-            imgurl + '" width="' + newW + '" height="' + newH + '">');
+    $thumb.after('<img class="img-full" src="' + imgurl + '" alt="Загрузка изображения..." width="' + newW + '" height="' + newH + '">');
     full = $('.img-full')[0];
-    full.style.cssText = 'left: ' + (scrW - newW - tmpW) / 2 + 'px; top: ' + (scrH - newH - tmpH) / 2 + 'px;';
+    full.style.cssText = 'left: ' + (scrW - newW - 22) / 2 + 'px; top: ' + (scrH - newH - 6) / 2 + 'px;';
 
     full.addEventListener(firefox ? 'DOMMouseScroll' : 'mousewheel', function(e) {
         var curX = e.clientX,
