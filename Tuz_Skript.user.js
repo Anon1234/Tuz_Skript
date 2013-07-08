@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     13.7.8.0
+// @version     13.7.8.1
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -604,7 +604,7 @@ function new_msg_stop(){
         if (!leaved) {
             $('.new_post').removeClass('new_post');
         }
-    }, 4000)
+    }, 2000)
 }
 
 
