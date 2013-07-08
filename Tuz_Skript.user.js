@@ -411,6 +411,7 @@ if (aCfg & 0x100000) {
     $('.container').css('padding-top', '15px');
     $('.btn.btn-small.btn-inverse.dropdown-toggle').remove();
     auto_resize();
+    $('.ar').height($('.ar').height() - 1); // фикс появления вертикального скроллбара в опере и хроме
 }
 
 
