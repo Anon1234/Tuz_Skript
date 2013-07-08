@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     13.7.7.0
+// @version     13.7.8.0
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -695,9 +695,10 @@ function expandimg(postnum, imgurl, thumburl, imgw, imgh, thumbw, thumbh) {
     $('.img-full').remove();
 
     var $thumb = $('#msg' + postnum +' div.pct img');
-    $thumb.after('<img class="img-full" src="' + imgurl + '" alt="Загрузка изображения..." width="' + newW + '" height="' + newH + '">');
+    $thumb.after('<img class="img-full" src="' + imgurl + '" alt="Загрузка изображения..." \
+         style="width:' + newW + 'px; height:' + newH + 'px;">');
     full = $('.img-full')[0];
-    full.style.cssText = 'left: ' + (scrW - newW - 22) / 2 + 'px; top: ' + (scrH - newH - 6) / 2 + 'px;';
+    full.style.cssText += 'left: ' + (scrW - newW - 22) / 2 + 'px; top: ' + (scrH - newH - 6) / 2 + 'px;';
 
     full.addEventListener(firefox ? 'DOMMouseScroll' : 'mousewheel', function(e) {
         var curX = e.clientX,
