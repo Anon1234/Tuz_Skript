@@ -477,11 +477,11 @@ function change_op() {
     OPACITY -= step;
     if (OPACITY - step < 0)
         OPACITY = 100;
-    $(".container").fadeTo(500, OPACITY / 100);
+    $(".container").fadeTo(200, OPACITY / 100);
     ls_set('opacity', OPACITY);
 }
 
-$(".container").fadeTo(500, OPACITY / 100);
+$(".container").fadeTo(200, OPACITY / 100);
 $btn_row.find(".btn:eq(3)").after('<button class="btn btn-mini" onclick="change_op()"><i class="icon-tint"></i></button>');
 
 
