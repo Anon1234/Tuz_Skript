@@ -387,7 +387,6 @@ if (aCfg & 0x800000 ) {
 // ---------- Удаление плеера ----------
 if (aCfg & 0x400000) {
     $("#lsn-btn").parents('.mb').remove();
-    //auto_resize()
 }
 
 // ---------- Убрать плейлист ----------
@@ -419,7 +418,6 @@ if (aCfg & 0x100000) {
 //                        Фиксы интерфейса
 
 $btn_row.wrap('<div id="btns" class="btn-toolbar" />');
-$(".span8 .clearfix").css('margin-bottom', '5px');
 $('link[rel="shortcut icon"]').addClass('favicon');
 $(".dropdown-toggle").remove();
 
@@ -465,7 +463,6 @@ $btn_row.append(
         '<a title="Лучшие треки" href="/?app=top" class="btn btn-mini"><i class="icon-star-empty"></i></a>' +
         '<a title="Баги и идеи" href="http://tuzach.reformal.ru/" class="btn btn-mini"><i class="icon-tasks"></i></a>' +
         '<button title="Переключить стиль" class="btn btn-mini" onclick="switch_style()"><i class="icon-adjust"></i></button>' +
-        //'<span style="margin-right: ' + ($(".msg table td:eq(2)").width() + 3) + 'px;"></span>' +
     '</div>'
 );
 
