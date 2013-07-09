@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     13.7.8.1
+// @version     13.7.9.0
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -676,7 +676,7 @@ function $revent(el, events) {
     }
 }
 
-function expandimg(postnum, imgurl, thumburl, imgw, imgh, thumbw, thumbh) {
+function expandimg(postnum, imgurl, imgw, imgh) {
 
     var elMove, elStop, newW, newH,
         scrH = window.innerHeight,
@@ -786,6 +786,16 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
                         };
                     });
                 };
+
+                if ($post.find('.pct').length) {
+                    var img_size = $post.find('.filesize').text().match(/(\d+)x(\d+)/);
+                    var img_href = $post.find('.filesize a').attr("href");
+                    var post_num = $post[0].id.slice(3);
+                    $post.find(".pct img").removeAttr("onclick").click(function(event) {
+                        expandimg(post_num, img_href, img_size[1], img_size[2]);
+                    });
+
+                }
 
             }).attr("data-tuz", "tuz");
 
