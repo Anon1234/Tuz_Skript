@@ -12,8 +12,7 @@
 
 // ---------- Общие стили ----------
 var css_style = document.createElement('style');
-css_style.type = "text/css";
-css_style.innerHTML = '' +
+css_style.appendChild(document.createTextNode('' +
     '.r4{border-radius:8px}' +
     '.tuz_hack{font-family:Courier New;font-size:11px;color:white;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAWCAYAAAABxvaqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41Ljg3O4BdAAAAQklEQVQYVxXEoQ5AAAAFwDebTRAURVEkRZIURVEUQbDZ/P9HcOEuSYpfSlWq1ahVp16DRk2atWjVpl2HTl269ej9AJF0BE7FA3MyAAAAAElFTkSuQmCC)}' +
     '.cvet{display:none}' +
@@ -25,7 +24,8 @@ css_style.innerHTML = '' +
     '.new_post {color: orange;}' +
     '.img-full { float: left; margin: 2px 10px; max-width: none; position: fixed; \
         z-index: 9999; background-color: white; border: 1px solid black; }'
-document.getElementsByTagName('head')[0].appendChild(css_style);
+    ));
+document.body.appendChild(css_style);
 
 
 
