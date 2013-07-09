@@ -30,8 +30,7 @@ document.body.appendChild(css_style);
 
 
 var script = document.createElement('script');
-script.type = "text/javascript";
-var main = (function main() {
+var skript = (function() {
 
 
 //-----------------------------------------------------------------------------
@@ -872,6 +871,6 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
 });
 
 
-}).toString();
-script.innerHTML = main.substr(17, main.length - 18);
-document.getElementsByTagName('head')[0].appendChild(script);
+}).toString().slice(13, -1);
+script.appendChild(document.createTextNode(skript));
+document.body.appendChild(script);
