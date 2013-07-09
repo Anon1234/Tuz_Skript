@@ -752,7 +752,7 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
 //-----------------------------------------------------------------------------
 //                        Обработка чата
 
-    if (settings.url.indexOf("/?app=chat") !== -1) {
+    if (settings.url.indexOf("/?app=chat&last") !== -1) {
         var res = $.parseJSON(xhr.responseText);
         if (res.count) {
 
@@ -812,7 +812,6 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
 
     else if (settings.url === "/?app=playlist") {
         var res = $.parseJSON(xhr.responseText);
-        if (!res) { return };
 
         if (aCfg & 0x200000) {
             $('#fill').html($('#fill').html().replace('Плейлист заполнен', 'Плейлист засран'));
