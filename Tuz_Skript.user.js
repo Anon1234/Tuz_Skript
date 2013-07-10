@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     13.7.9.0
+// @version     13.7.10.0
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -690,7 +690,7 @@ function expandimg(postnum, imgurl, imgw, imgh) {
         newW = newH * imgw / imgh;
     }
 
-    $('.img-full').remove();
+    $('.img-full').click();
 
     var $thumb = $('#msg' + postnum +' div.pct img');
     $thumb.after('<img class="img-full" src="' + imgurl + '" alt="Загрузка изображения..." \
@@ -737,9 +737,30 @@ function expandimg(postnum, imgurl, imgw, imgh) {
             this.moved = false;
         }
         else {
+            document.body.removeEventListener('keydown', next_image, true);
             $(this).remove();
         }
     }, true);
+
+    function next_image(e) {
+        e.preventDefault();
+        var kc = e.keyCode;
+        var $imgs = $(".pct img:first-of-type");
+        var ti = $imgs.index($(".img-full").prev());
+        if (kc == 39) { // right arrow
+            var next = (ti + 1 > $imgs.length - 1) ? $imgs.eq(0) : $imgs.eq(ti + 1);
+            next.click();
+        }
+        else if (kc == 37) { // left arrow
+            var prev = (ti - 1 < 0) ? $imgs.eq($imgs.length - 1) : $imgs.eq(ti - 1);
+            prev.click();
+        }
+        else if (kc == 27) { // esc
+            $(".img-full").click();
+        }
+    }
+
+    document.body.addEventListener('keydown', next_image, true);
 }
 
 
