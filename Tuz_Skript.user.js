@@ -4,7 +4,7 @@
 // @include     http://tuzach.in/
 // @include     http://tuzach.in/#*
 // @grant       none
-// @version     13.7.10.0
+// @version     13.7.11.0
 // @updateURL   https://github.com/Anon1234/Tuz_Skript/raw/master/Tuz_Skript.user.js
 // @icon        https://github.com/Anon1234/Tuz_Skript/raw/master/blue_tuz.png
 // ==/UserScript==
@@ -65,56 +65,6 @@ $("#chat .alert").remove();
 $btn_row= $('#anal').parent();
 
 IGNORED_MSGS = [];
-
-
-//-----------------------------------------------------------------------------
-//                Функции подсчета времени до трека
-
-String.prototype.zfill = function (width) {
-    // Расширяет строку до заданого размера
-    // "1".zfill(3) => "001"
-    // "10".zfill(3) => "010"
-    var str = '' + this;
-    while (str.length < width) str = '0' + str;
-    return str;
-}
-
-function tts(s) {
-    // "[hh:]mm:ss" в секунды
-    var t = s.split(":");
-    if (t.length == 3)
-        return parseInt(t[0]) * 3600 + parseInt(t[1]) * 60 + parseInt(t[2]);
-    else
-        return parseInt(t[0]) * 60 + parseInt(t[1]);
-}
-
-function stt(seconds) {
-    // Секунды в "[hh:]mm:ss"
-    var h = Math.floor(seconds / 3600);
-    var m = Math.floor((seconds - (h * 3600)) / 60);
-    var s = seconds - (h * 3600) - (m * 60);
-    if (h)
-        return h + ":" +
-               m.toString().zfill(2) + ":" +
-               s.toString().zfill(2);
-    else
-        return m + ":" +
-               s.toString().zfill(2);
-}
-
-function count_time_to(track){
-    // Считаем длительность всех треков перед заданным
-    var total = 0;
-    $(track).prevAll().each(
-        function(i, e) {
-            total += tts($(e).find(".length").text());
-            total -= 2; // Поправка на кроссфейд
-        }
-    );
-    var time = total + Math.ceil((sec_total - sec_past) - sec_total);
-    time = (time > 0) ? time : 0;
-    return "+" + stt(time);
-}
 
 
 //-----------------------------------------------------------------------------
@@ -859,13 +809,6 @@ $(document).ajaxSuccess(function(event, xhr, settings) {
                 $(this).addClass("track")
                     .attr("data-track-id", res.songs[i].id)
                     .attr("data-track-length", res.songs[i].length)
-                    .hover(
-                        function() {
-                            $(this).find('.length').html(count_time_to(this));
-                        },
-                        function() {
-                            $(this).find('.length').html($(this).attr('data-track-length'));
-                    })
                     .click(function(event) {
 
                         if (event.target == this.getElementsByTagName("img")[0]) { return; };
